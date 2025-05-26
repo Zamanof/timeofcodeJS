@@ -26,7 +26,16 @@ export class DatabaseService {
     // Category methods
     async getCategoriesByLanguage(languageId: string) {
         if (!this.categories) throw new Error('Database not initialized');
-        return this.categories.find({ languageId: new ObjectId(languageId) }).toArray();
+        try {
+            const id = parseInt(languageId);
+            if (isNaN(id)) {
+                throw new Error('Invalid language ID');
+            }
+            return this.categories.find({ languageId: id }).toArray();
+        } catch (error) {
+            console.error('Error in getCategoriesByLanguage:', error);
+            throw error;
+        }
     }
 
     // Topic methods

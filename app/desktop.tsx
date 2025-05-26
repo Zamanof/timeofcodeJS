@@ -31,7 +31,7 @@ const CustomAccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex flex-1 items-center justify-between py-4 font-medium transition-all",
+        "flex flex-1 items-center justify-between py-1 font-medium transition-all",
         className
       )}
       {...props}
@@ -85,14 +85,16 @@ export const Desktop = (): JSX.Element => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      if (!selectedLanguage) return;
+      if (!selectedLanguage?.id) return;
       
       try {
         setLoading(true);
-        const data = await api.categories.getByLanguage(selectedLanguage.id);
+        console.log('Fetching categories for language:', selectedLanguage.id);
+        const data = await api.categories.getByLanguage(selectedLanguage.id.toString());
         setCategories(data);
         setError(null);
       } catch (err) {
+        console.error('Error fetching categories:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch categories');
       } finally {
         setLoading(false);
@@ -103,7 +105,7 @@ export const Desktop = (): JSX.Element => {
   }, [selectedLanguage]);
 
   useEffect(() => {
-    const fetchTopics = async (categoryId: number) => {
+    const fetchTopics = async (categoryId: string) => {
       try {
         const data = await api.topics.getByCategory(categoryId);
         return data;
@@ -115,7 +117,7 @@ export const Desktop = (): JSX.Element => {
 
     const loadAllTopics = async () => {
       const allTopics = await Promise.all(
-        categories.map(category => fetchTopics(category.id))
+        categories.map(category => fetchTopics(category._id || ''))
       );
       setTopics(allTopics.flat());
     };
@@ -129,11 +131,11 @@ export const Desktop = (): JSX.Element => {
 
   useEffect(() => {
     const fetchArticles = async () => {
-      if (!selectedTopic) return;
+      if (!selectedTopic?._id) return;
       
       try {
         setLoading(true);
-        const data = await api.articles.getByTopic(selectedTopic.id);
+        const data = await api.articles.getByTopic(selectedTopic._id);
         setArticles(data);
         setError(null);
       } catch (err) {
@@ -175,17 +177,20 @@ export const Desktop = (): JSX.Element => {
 
               {/* Programming Languages Menu */}
               <Tabs 
-                value={selectedLanguage?.name.toLowerCase()} 
+                value={selectedLanguage?.name.toLowerCase() || languages[0]?.name.toLowerCase()} 
                 className="w-full"
                 onValueChange={(value) => {
                   const lang = languages.find(l => l.name.toLowerCase() === value);
-                  if (lang) setSelectedLanguage(lang);
+                  if (lang) {
+                    console.log('Selected language:', lang);
+                    setSelectedLanguage(lang);
+                  }
                 }}
               >
                 <TabsList className="bg-transparent shadow-none">
-                  {languages.map((lang) => (
+                  {languages.map((lang, index) => (
                     <TabsTrigger
-                      key={lang.id}
+                      key={lang._id}
                       value={lang.name.toLowerCase()}
                       className="bg-transparent shadow-none data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-black dark:data-[state=active]:text-white text-[#534e4e] dark:text-[#cccccc] hover:bg-transparent hover:shadow-none relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 data-[state=active]:after:scale-x-100 after:bg-black dark:after:bg-white after:transition-transform text-[16px]"
                     >
@@ -228,13 +233,13 @@ export const Desktop = (): JSX.Element => {
         {/* Left Sidebar */}
         <Card className="w-full md:w-[267px] shrink-0 border-[0.5px] border-black dark:border-white rounded-[10px]">
           <CardContent className="p-4">
-            <Accordion type="multiple" className="space-y-4">
+            <Accordion type="multiple" className="space-y-1">
               {categories.map((category) => {
-                const categoryTopics = topics.filter(t => t.categoryId === category.id);
+                const categoryTopics = topics.filter(t => t.categoryId === category._id);
                 return (
                   <AccordionItem 
-                    key={category.id} 
-                    value={category.id.toString()} 
+                    key={category._id} 
+                    value={category._id?.toString() || ''} 
                     className="border-b-0 last:border-b-0 [&_svg]:rotate-180 [&_[data-state=open]_svg]:rotate-0"
                   >
                     <CustomAccordionTrigger className="hover:no-underline">
@@ -248,18 +253,18 @@ export const Desktop = (): JSX.Element => {
                       </div>
                     </CustomAccordionTrigger>
                     <AccordionContent>
-                      <div className="space-y-2 pl-4">
+                      <div className="space-y-1 pl-4">
                         {categoryTopics.map((topic) => (
                           <button
-                            key={topic.id}
+                            key={topic._id}
                             onClick={() => setSelectedTopic(topic)}
-                            className={`w-full text-left px-2 py-1 rounded-md text-[18px] ${
-                              selectedTopic?.id === topic.id
+                            className={`w-full text-left px-2 py-0.25 rounded-md text-[16px] ${
+                              selectedTopic?._id === topic._id
                                 ? 'bg-black/10 dark:bg-white/10 text-black dark:text-white'
                                 : 'text-[#534e4e] dark:text-[#cccccc] hover:bg-black/5 dark:hover:bg-white/5'
                             }`}
                           >
-                            {topic.title}
+                            {topic.name}
                           </button>
                         ))}
                       </div>
@@ -278,7 +283,7 @@ export const Desktop = (): JSX.Element => {
               {selectedTopic ? (
                 <div className="prose dark:prose-invert max-w-none">
                   <h1 className="text-2xl font-bold text-black dark:text-white mb-4">
-                    {selectedTopic.title}
+                    {selectedTopic.name}
                   </h1>
                   <p className="text-[18px] text-[#534e4e] dark:text-[#cccccc] mb-6">
                     {selectedTopic.description}
@@ -293,7 +298,7 @@ export const Desktop = (): JSX.Element => {
                   ) : (
                     <div className="space-y-8">
                       {articles.map((article) => (
-                        <div key={article.id} className="prose dark:prose-invert">
+                        <div key={article._id} className="prose dark:prose-invert">
                           <h2 className="text-xl font-semibold text-black dark:text-white mb-4">
                             {article.title}
                           </h2>

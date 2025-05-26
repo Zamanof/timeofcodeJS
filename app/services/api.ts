@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://localhost:4000/api';
 
 const handleResponse = async (response: Response) => {
     if (!response.ok) {
@@ -9,14 +9,18 @@ const handleResponse = async (response: Response) => {
 };
 
 export interface Language {
+    _id: string;
     id: number;
     name: string;
     description: string;
-    icon?: string;
+    icon: string;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    popularity: number;
+    category: string;
 }
 
 export interface Category {
-    id: number;
+    _id?: string;
     name: string;
     description: string;
     languageId: number;
@@ -24,10 +28,13 @@ export interface Category {
 }
 
 export interface Topic {
-    id: number;
-    title: string;
+    _id?: string;
+    name: string;
     description: string;
-    categoryId: number;
+    categoryId: string;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    estimatedTime: string;
+    prerequisites: string[];
     order: number;
 }
 
@@ -38,19 +45,27 @@ export interface CodeExample {
 }
 
 export interface Article {
-    id: number;
+    _id?: string;
     title: string;
     content: string;
-    topicId: number;
-    order: number;
+    topicId: string;
+    readingTime: string;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    tags: string[];
     codeExamples: CodeExample[];
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export const api = {
     languages: {
         getAll: async (): Promise<Language[]> => {
             const response = await fetch(`${API_BASE_URL}/languages`);
-            return handleResponse(response);
+            const data = await handleResponse(response);
+            return data.map((lang: any, index: number) => ({
+                ...lang,
+                id: index + 1
+            }));
         },
         create: async (language: Omit<Language, 'id'>): Promise<Language> => {
             const response = await fetch(`${API_BASE_URL}/languages`, {
@@ -67,20 +82,20 @@ export const api = {
         }
     },
     categories: {
-        getByLanguage: async (languageId: number): Promise<Category[]> => {
-            const response = await fetch(`${API_BASE_URL}/categories?languageId=${languageId}`);
+        getByLanguage: async (languageId: string): Promise<Category[]> => {
+            const response = await fetch(`${API_BASE_URL}/languages/${languageId}/categories`);
             return handleResponse(response);
         }
     },
     topics: {
-        getByCategory: async (categoryId: number): Promise<Topic[]> => {
-            const response = await fetch(`${API_BASE_URL}/topics?categoryId=${categoryId}`);
+        getByCategory: async (categoryId: string): Promise<Topic[]> => {
+            const response = await fetch(`${API_BASE_URL}/categories/${categoryId}/topics`);
             return handleResponse(response);
         }
     },
     articles: {
-        getByTopic: async (topicId: number): Promise<Article[]> => {
-            const response = await fetch(`${API_BASE_URL}/articles?topicId=${topicId}`);
+        getByTopic: async (topicId: string): Promise<Article[]> => {
+            const response = await fetch(`${API_BASE_URL}/topics/${topicId}/articles`);
             return handleResponse(response);
         }
     }

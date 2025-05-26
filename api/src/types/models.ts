@@ -5,14 +5,18 @@ export interface Language {
     name: string;
     description: string;
     icon: string;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    popularity: number;
+    category: string;
 }
 
 export interface Category {
     _id?: ObjectId;
-    languageId: ObjectId;
+    languageId: number;
     name: string;
     description: string;
     icon: string;
+    order: number;
 }
 
 export interface Topic {
@@ -21,6 +25,15 @@ export interface Topic {
     name: string;
     description: string;
     difficulty: 'beginner' | 'intermediate' | 'advanced';
+    estimatedTime: string;
+    prerequisites: string[];
+    order: number;
+}
+
+export interface CodeExample {
+    code: string;
+    description: string;
+    language: string;
 }
 
 export interface Article {
@@ -29,6 +42,10 @@ export interface Article {
     title: string;
     content: string;
     author: string;
+    readingTime: string;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    tags: string[];
+    codeExamples: CodeExample[];
     createdAt: Date;
     updatedAt: Date;
 } 
