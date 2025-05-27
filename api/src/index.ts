@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { languages } from './models/Language';
 import { categories } from './models/Category';
@@ -6,18 +6,18 @@ import { topics } from './models/Topic';
 import { articles } from './models/Article';
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
 // Languages endpoint
-app.get('/api/languages', (req, res) => {
+app.get('/api/languages', (_req: Request, res: Response) => {
     res.json(languages);
 });
 
 // Categories endpoint
-app.get('/api/categories', (req, res) => {
+app.get('/api/categories', (req: Request, res: Response) => {
     const languageId = parseInt(req.query.languageId as string);
     if (isNaN(languageId)) {
         return res.status(400).json({ error: 'Invalid languageId' });
@@ -27,7 +27,7 @@ app.get('/api/categories', (req, res) => {
 });
 
 // Topics endpoint
-app.get('/api/topics', (req, res) => {
+app.get('/api/topics', (req: Request, res: Response) => {
     const categoryId = parseInt(req.query.categoryId as string);
     if (isNaN(categoryId)) {
         return res.status(400).json({ error: 'Invalid categoryId' });
@@ -37,7 +37,7 @@ app.get('/api/topics', (req, res) => {
 });
 
 // Articles endpoint
-app.get('/api/articles', (req, res) => {
+app.get('/api/articles', (req: Request, res: Response) => {
     const topicId = parseInt(req.query.topicId as string);
     if (isNaN(topicId)) {
         return res.status(400).json({ error: 'Invalid topicId' });
