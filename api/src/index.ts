@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, RequestHandler } from 'express';
 import cors from 'cors';
 import { languages } from './models/Language';
 import { categories } from './models/Category';
@@ -12,39 +12,45 @@ app.use(cors());
 app.use(express.json());
 
 // Languages endpoint
-app.get('/api/languages', (_req: Request, res: Response) => {
+const getLanguages: RequestHandler = (_req, res) => {
     res.json(languages);
-});
+};
 
 // Categories endpoint
-app.get('/api/categories', (req: Request, res: Response) => {
+const getCategories: RequestHandler = (req, res) => {
     const languageId = parseInt(req.query.languageId as string);
     if (isNaN(languageId)) {
         return res.status(400).json({ error: 'Invalid languageId' });
     }
     const filteredCategories = categories.filter(cat => cat.languageId === languageId);
     res.json(filteredCategories);
-});
+};
 
 // Topics endpoint
-app.get('/api/topics', (req: Request, res: Response) => {
+const getTopics: RequestHandler = (req, res) => {
     const categoryId = parseInt(req.query.categoryId as string);
     if (isNaN(categoryId)) {
         return res.status(400).json({ error: 'Invalid categoryId' });
     }
     const filteredTopics = topics.filter(topic => topic.categoryId === categoryId);
     res.json(filteredTopics);
-});
+};
 
 // Articles endpoint
-app.get('/api/articles', (req: Request, res: Response) => {
+const getArticles: RequestHandler = (req, res) => {
     const topicId = parseInt(req.query.topicId as string);
     if (isNaN(topicId)) {
         return res.status(400).json({ error: 'Invalid topicId' });
     }
     const filteredArticles = articles.filter(article => article.topicId === topicId);
     res.json(filteredArticles);
-});
+};
+
+// Register routes
+app.get('/api/languages', getLanguages);
+app.get('/api/categories', getCategories);
+app.get('/api/topics', getTopics);
+app.get('/api/articles', getArticles);
 
 app.listen(port, () => {
     console.log(`API server running at http://localhost:${port}`);
