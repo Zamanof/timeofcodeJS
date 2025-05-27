@@ -26,14 +26,12 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name: Install API Dependencies
+      - name: Install Dependencies
         run: |
+          npm ci
           cd api
-          npm install --force
+          npm ci
           cd ..
-
-      - name: Install Root Dependencies
-        run: npm install
 
       - name: Build And Deploy
         id: builddeploy
@@ -45,8 +43,9 @@ jobs:
           app_location: "/" # App source code path
           api_location: "api" # Api source code path
           output_location: ".next" # Built app content directory
-          app_build_command: "npm run build:next"
-          api_build_command: "cd api && npm install --force && npm run build"
+          app_build_command: "npm run build"
+          api_build_command: "npm run build"
+          is_static_export: false
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
