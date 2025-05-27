@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && cd api && npm install && npm run build && cd ..",
+    "build:api": "cd api && npm install && npm run build",
+    "build:next": "next build",
+    "build": "npm run build:next && npm run build:api",
     "start": "next start",
     "lint": "next lint"
   },
