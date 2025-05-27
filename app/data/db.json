@@ -1,0 +1,91 @@
+{
+  "languages": [
+    {
+      "_id": "wz92qg4tx",
+      "name": "Python",
+      "description": "",
+      "icon": "",
+      "difficulty": 1,
+      "popularity": 1,
+      "category": []
+    },
+    {
+      "_id": "cvkp4x416",
+      "name": "C#",
+      "description": "",
+      "icon": "",
+      "difficulty": 1,
+      "popularity": 1,
+      "category": []
+    }
+  ],
+  "categories": [
+    {
+      "_id": "pil4p24ss",
+      "name": "OOP",
+      "description": "",
+      "languageId": "wz92qg4tx",
+      "order": 0
+    },
+    {
+      "_id": "rr7bsbe8o",
+      "name": "Memory",
+      "description": "",
+      "languageId": "cvkp4x416",
+      "order": 0
+    }
+  ],
+  "topics": [
+    {
+      "_id": "meaeytgp0",
+      "title": "Incapsulation",
+      "description": "",
+      "categoryId": "pil4p24ss",
+      "order": 0
+    },
+    {
+      "_id": "szayypvha",
+      "title": "Polymorphism",
+      "description": "",
+      "categoryId": "pil4p24ss",
+      "order": 0
+    },
+    {
+      "_id": "qnyo018im",
+      "title": "Garbage collector",
+      "description": "",
+      "categoryId": "rr7bsbe8o",
+      "order": 0
+    }
+  ],
+  "articles": [
+    {
+      "_id": "nwxq7s9k7",
+      "title": "Incapsulation",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque, augue in efficitur eleifend, ligula turpis auctor orci, nec varius risus lorem nec diam. In vitae lorem sed leo hendrerit vulputate ac a enim. Mauris consequat magna massa, sit amet eleifend quam venenatis ac. Etiam in risus in mi eleifend commodo id a sem. Vestibulum eget vestibulum augue. Sed sit amet hendrerit nibh, quis tristique nulla. Curabitur faucibus blandit mollis. Integer molestie pulvinar dui molestie finibus. Donec consequat tortor ac elit elementum, in pulvinar tellus scelerisque. In diam turpis, faucibus ut pretium sit amet, malesuada eu arcu. Curabitur a risus pulvinar, accumsan risus eu, mollis est. Donec vitae bibendum ipsum, ac sagittis risus.\n\nDuis hendrerit lorem magna. Nunc eu tempus nisi. Fusce quis purus purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus et sapien in libero porta euismod. Sed hendrerit dolor risus, accumsan rhoncus lorem mollis et. Aliquam laoreet vehicula magna sed maximus. Fusce venenatis quis odio ut egestas. Quisque ut ornare metus, ac semper lorem. Nam elit ipsum, imperdiet vitae diam eu, feugiat ultrices sem. Nullam in arcu dignissim, efficitur justo sit amet, maximus nisi. Nulla commodo neque sit amet leo aliquet mattis. Vestibulum non nunc faucibus, commodo turpis ac, feugiat erat. Sed efficitur nunc vel fermentum molestie. Nunc tempus leo sed sem sollicitudin, id vestibulum neque congue. Suspendisse tempor nulla ac quam scelerisque, non venenatis turpis aliquam.\n\nMorbi at iaculis leo. Suspendisse vel ornare dui. Sed ac dolor viverra, dapibus sem eu, tristique ex. Cras eget magna at urna molestie ultrices. Aliquam egestas, sapien a ullamcorper luctus, felis lacus hendrerit quam, at dignissim leo lacus et magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae lorem a erat ultrices accumsan. Nulla varius fringilla dui. In hac habitasse platea dictumst. Morbi et eros lectus. Ut mauris neque, ultrices consequat ornare dictum, viverra semper augue. Quisque varius, purus ut faucibus pharetra, sem lacus condimentum nisl, at condimentum nunc sem congue nisi.\n\n\n```\n# Python program to convert decimal into other number systems\ndec = 344\n\nprint(\"The decimal value of\", dec, \"is:\")\nprint(bin(dec), \"in binary.\")\nprint(oct(dec), \"in octal.\")\nprint(hex(dec), \"in hexadecimal.\")\n```\n\n\nAliquam mattis in dui at laoreet. Curabitur faucibus posuere orci id sollicitudin. Fusce cursus lorem in massa imperdiet, vitae bibendum sem dictum. Donec eu eleifend tortor. Nunc convallis lectus vitae leo interdum porta. Phasellus sapien magna, tempus quis lorem eu, blandit ullamcorper justo. Aenean pulvinar orci odio. Cras eget vulputate mi, ut ornare erat. Aliquam accumsan ex tempus nisl dapibus, eu finibus nibh congue. Donec massa leo, porttitor vel fermentum eget, tristique nec felis.\n\nAenean quis orci ut diam fermentum facilisis in sed ex. Sed purus erat, tincidunt ut mattis ut, venenatis a dui. Phasellus rhoncus semper arcu, vitae rhoncus felis suscipit non. Duis in velit ornare, eleifend lectus a, porttitor lectus. Phasellus euismod feugiat convallis. Ut vel finibus eros. Vivamus accumsan, mi non porta pulvinar, justo ante vulputate elit, eu consectetur tortor libero a leo. Suspendisse potenti. Pellentesque eu mi quis dolor commodo finibus ut a purus. Nam gravida dapibus ligula elementum molestie. Quisque in elit aliquam, pharetra sem eget, cursus lorem. Ut ligula urna, egestas eget nunc id, hendrerit cursus diam.",
+      "topicId": "meaeytgp0",
+      "order": 0
+    },
+    {
+      "_id": "5bp203tk1",
+      "title": "",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque, augue in efficitur eleifend, ligula turpis auctor orci, nec varius risus lorem nec diam. In vitae lorem sed leo hendrerit vulputate ac a enim. Mauris consequat magna massa, sit amet eleifend quam venenatis ac. Etiam in risus in mi eleifend commodo id a sem. Vestibulum eget vestibulum augue. Sed sit amet hendrerit nibh, quis tristique nulla. Curabitur faucibus blandit mollis. Integer molestie pulvinar dui molestie finibus. Donec consequat tortor ac elit elementum, in pulvinar tellus scelerisque. In diam turpis, faucibus ut pretium sit amet, malesuada eu arcu. Curabitur a risus pulvinar, accumsan risus eu, mollis est. Donec vitae bibendum ipsum, ac sagittis risus.\n\nDuis hendrerit lorem magna. Nunc eu tempus nisi. Fusce quis purus purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus et sapien in libero porta euismod. Sed hendrerit dolor risus, accumsan rhoncus lorem mollis et. Aliquam laoreet vehicula magna sed maximus. Fusce venenatis quis odio ut egestas. Quisque ut ornare metus, ac semper lorem. Nam elit ipsum, imperdiet vitae diam eu, feugiat ultrices sem. Nullam in arcu dignissim, efficitur justo sit amet, maximus nisi. Nulla commodo neque sit amet leo aliquet mattis. Vestibulum non nunc faucibus, commodo turpis ac, feugiat erat. Sed efficitur nunc vel fermentum molestie. Nunc tempus leo sed sem sollicitudin, id vestibulum neque congue. Suspendisse tempor nulla ac quam scelerisque, non venenatis turpis aliquam.\n\nMorbi at iaculis leo. Suspendisse vel ornare dui. Sed ac dolor viverra, dapibus sem eu, tristique ex. Cras eget magna at urna molestie ultrices. Aliquam egestas, sapien a ullamcorper luctus, felis lacus hendrerit quam, at dignissim leo lacus et magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae lorem a erat ultrices accumsan. Nulla varius fringilla dui. In hac habitasse platea dictumst. Morbi et eros lectus. Ut mauris neque, ultrices consequat ornare dictum, viverra semper augue. Quisque varius, purus ut faucibus pharetra, sem lacus condimentum nisl, at condimentum nunc sem congue nisi.\n\n\n```python\n\n# Python program to convert decimal into other number systems\ndec = 344\n\nprint(\"The decimal value of\", dec, \"is:\")\nprint(bin(dec), \"in binary.\")\nprint(oct(dec), \"in octal.\")\nprint(hex(dec), \"in hexadecimal.\")\n```\n\n\nAliquam mattis in dui at laoreet. Curabitur faucibus posuere orci id sollicitudin. Fusce cursus lorem in massa imperdiet, vitae bibendum sem dictum. Donec eu eleifend tortor. Nunc convallis lectus vitae leo interdum porta. Phasellus sapien magna, tempus quis lorem eu, blandit ullamcorper justo. Aenean pulvinar orci odio. Cras eget vulputate mi, ut ornare erat. Aliquam accumsan ex tempus nisl dapibus, eu finibus nibh congue. Donec massa leo, porttitor vel fermentum eget, tristique nec felis.\n\nAenean quis orci ut diam fermentum facilisis in sed ex. Sed purus erat, tincidunt ut mattis ut, venenatis a dui. Phasellus rhoncus semper arcu, vitae rhoncus felis suscipit non. Duis in velit ornare, eleifend lectus a, porttitor lectus. Phasellus euismod feugiat convallis. Ut vel finibus eros. Vivamus accumsan, mi non porta pulvinar, justo ante vulputate elit, eu consectetur tortor libero a leo. Suspendisse potenti. Pellentesque eu mi quis dolor commodo finibus ut a purus. Nam gravida dapibus ligula elementum molestie. Quisque in elit aliquam, pharetra sem eget, cursus lorem. Ut ligula urna, egestas eget nunc id, hendrerit cursus diam.",
+      "topicId": "",
+      "order": 0
+    },
+    {
+      "_id": "r6k9eihbs",
+      "title": "Polymorphism",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque, augue in efficitur eleifend, ligula turpis auctor orci, nec varius risus lorem nec diam. In vitae lorem sed leo hendrerit vulputate ac a enim. Mauris consequat magna massa, sit amet eleifend quam venenatis ac. Etiam in risus in mi eleifend commodo id a sem. Vestibulum eget vestibulum augue. Sed sit amet hendrerit nibh, quis tristique nulla. Curabitur faucibus blandit mollis. Integer molestie pulvinar dui molestie finibus. Donec consequat tortor ac elit elementum, in pulvinar tellus scelerisque. In diam turpis, faucibus ut pretium sit amet, malesuada eu arcu. Curabitur a risus pulvinar, accumsan risus eu, mollis est. Donec vitae bibendum ipsum, ac sagittis risus.\n\nDuis hendrerit lorem magna. Nunc eu tempus nisi. Fusce quis purus purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus et sapien in libero porta euismod. Sed hendrerit dolor risus, accumsan rhoncus lorem mollis et. Aliquam laoreet vehicula magna sed maximus. Fusce venenatis quis odio ut egestas. Quisque ut ornare metus, ac semper lorem. Nam elit ipsum, imperdiet vitae diam eu, feugiat ultrices sem. Nullam in arcu dignissim, efficitur justo sit amet, maximus nisi. Nulla commodo neque sit amet leo aliquet mattis. Vestibulum non nunc faucibus, commodo turpis ac, feugiat erat. Sed efficitur nunc vel fermentum molestie. Nunc tempus leo sed sem sollicitudin, id vestibulum neque congue. Suspendisse tempor nulla ac quam scelerisque, non venenatis turpis aliquam.\n\nMorbi at iaculis leo. Suspendisse vel ornare dui. Sed ac dolor viverra, dapibus sem eu, tristique ex. Cras eget magna at urna molestie ultrices. Aliquam egestas, sapien a ullamcorper luctus, felis lacus hendrerit quam, at dignissim leo lacus et magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae lorem a erat ultrices accumsan. Nulla varius fringilla dui. In hac habitasse platea dictumst. Morbi et eros lectus. Ut mauris neque, ultrices consequat ornare dictum, viverra semper augue. Quisque varius, purus ut faucibus pharetra, sem lacus condimentum nisl, at condimentum nunc sem congue nisi.\n\n\n```python\n\n# Python program to convert decimal into other number systems\ndec = 344\n\nprint(\"The decimal value of\", dec, \"is:\")\nprint(bin(dec), \"in binary.\")\nprint(oct(dec), \"in octal.\")\nprint(hex(dec), \"in hexadecimal.\")\n```\n\n\nAliquam mattis in dui at laoreet. Curabitur faucibus posuere orci id sollicitudin. Fusce cursus lorem in massa imperdiet, vitae bibendum sem dictum. Donec eu eleifend tortor. Nunc convallis lectus vitae leo interdum porta. Phasellus sapien magna, tempus quis lorem eu, blandit ullamcorper justo. Aenean pulvinar orci odio. Cras eget vulputate mi, ut ornare erat. Aliquam accumsan ex tempus nisl dapibus, eu finibus nibh congue. Donec massa leo, porttitor vel fermentum eget, tristique nec felis.\n\nAenean quis orci ut diam fermentum facilisis in sed ex. Sed purus erat, tincidunt ut mattis ut, venenatis a dui. Phasellus rhoncus semper arcu, vitae rhoncus felis suscipit non. Duis in velit ornare, eleifend lectus a, porttitor lectus. Phasellus euismod feugiat convallis. Ut vel finibus eros. Vivamus accumsan, mi non porta pulvinar, justo ante vulputate elit, eu consectetur tortor libero a leo. Suspendisse potenti. Pellentesque eu mi quis dolor commodo finibus ut a purus. Nam gravida dapibus ligula elementum molestie. Quisque in elit aliquam, pharetra sem eget, cursus lorem. Ut ligula urna, egestas eget nunc id, hendrerit cursus diam.",
+      "topicId": "szayypvha",
+      "order": 0
+    },
+    {
+      "_id": "y086e7icu",
+      "title": "",
+      "content": "```csharp\n\nstatic int PlusMethodInt(int x, int y)\n{\n  return x + y;\n}\n\nstatic double PlusMethodDouble(double x, double y)\n{\n  return x + y;\n}\n\nstatic void Main(string[] args)\n{\n  int myNum1 = PlusMethodInt(8, 5);\n  double myNum2 = PlusMethodDouble(4.3, 6.26);\n  Console.WriteLine(\"Int: \" + myNum1);\n  Console.WriteLine(\"Double: \" + myNum2);\n}\n```",
+      "topicId": "qnyo018im",
+      "order": 0
+    }
+  ]
+}

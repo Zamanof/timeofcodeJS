@@ -12,6 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api, Language, Category, Topic, Article, CodeExample } from './services/api';
 import { cn } from "@/lib/utils";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import type { CodeProps } from 'react-markdown/lib/ast-to-react';
 
 const customStyle: React.CSSProperties = {
   background: 'transparent',
@@ -85,12 +88,12 @@ export const Desktop = (): JSX.Element => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      if (!selectedLanguage?.id) return;
+      if (!selectedLanguage?._id) return;
       
       try {
         setLoading(true);
-        console.log('Fetching categories for language:', selectedLanguage.id);
-        const data = await api.categories.getByLanguage(selectedLanguage.id.toString());
+        console.log('Fetching categories for language:', selectedLanguage._id);
+        const data = await api.categories.getByLanguage(selectedLanguage._id);
         setCategories(data);
         setError(null);
       } catch (err) {
@@ -157,7 +160,7 @@ export const Desktop = (): JSX.Element => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen h-full bg-[#f7f7fa] dark:bg-[#1a1a1a] p-2.5">
+    <div className="flex flex-col min-h-screen h-full bg-[#f7f7fa] dark:bg-[#131516] p-2.5">
       {/* Header */}
       <Card className="w-full mb-2 border border-black dark:border-white rounded-[10px]">
         <CardContent className="flex flex-col gap-4 p-4">
@@ -192,7 +195,7 @@ export const Desktop = (): JSX.Element => {
                     <TabsTrigger
                       key={lang._id}
                       value={lang.name.toLowerCase()}
-                      className="bg-transparent shadow-none data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-black dark:data-[state=active]:text-white text-[#534e4e] dark:text-[#cccccc] hover:bg-transparent hover:shadow-none relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 data-[state=active]:after:scale-x-100 after:bg-black dark:after:bg-white after:transition-transform text-[16px]"
+                      className="bg-transparent shadow-none data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-black dark:data-[state=active]:text-white text-[#534e4e] dark:text-[#76a3ad] hover:bg-transparent hover:shadow-none relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 data-[state=active]:after:scale-x-100 after:bg-black dark:after:bg-white after:transition-transform text-[21px]"
                     >
                       {lang.name}
                     </TabsTrigger>
@@ -204,11 +207,11 @@ export const Desktop = (): JSX.Element => {
             {/* Search and Theme Toggle */}
             <div className="flex items-center gap-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#534e4e] dark:text-[#cccccc]" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#534e4e] dark:text-[#76a3ad]" />
                 <Input
                   type="text"
                   placeholder="Search..."
-                  className="w-[300px] pl-9 border-[0.5px] border-black dark:border-white rounded-[10px] bg-transparent text-[18px] font-normal text-[#534e4e] dark:text-[#cccccc] placeholder:text-[#534e4e] dark:placeholder:text-[#cccccc]"
+                  className="w-[300px] pl-9 border-[0.5px] border-black dark:border-white rounded-[10px] bg-transparent text-[18px] font-normal text-[#534e4e] dark:text-[#76a3ad] placeholder:text-[#534e4e] dark:placeholder:text-[#76a3ad]"
                 />
               </div>
               <Switch
@@ -261,10 +264,10 @@ export const Desktop = (): JSX.Element => {
                             className={`w-full text-left px-2 py-0.25 rounded-md text-[16px] ${
                               selectedTopic?._id === topic._id
                                 ? 'bg-black/10 dark:bg-white/10 text-black dark:text-white'
-                                : 'text-[#534e4e] dark:text-[#cccccc] hover:bg-black/5 dark:hover:bg-white/5'
+                                : 'text-[#534e4e] dark:text-[#76a3ad] hover:bg-black/5 dark:hover:bg-white/5'
                             }`}
                           >
-                            {topic.name}
+                            {topic.title}
                           </button>
                         ))}
                       </div>
@@ -283,9 +286,9 @@ export const Desktop = (): JSX.Element => {
               {selectedTopic ? (
                 <div className="prose dark:prose-invert max-w-none">
                   <h1 className="text-2xl font-bold text-black dark:text-white mb-4">
-                    {selectedTopic.name}
+                    {selectedTopic.title}
                   </h1>
-                  <p className="text-[18px] text-[#534e4e] dark:text-[#cccccc] mb-6">
+                  <p className="text-[18px] text-[#534e4e] dark:text-[#76a3ad] mb-6">
                     {selectedTopic.description}
                   </p>
                   
@@ -302,36 +305,49 @@ export const Desktop = (): JSX.Element => {
                           <h2 className="text-xl font-semibold text-black dark:text-white mb-4">
                             {article.title}
                           </h2>
-                          <div className="text-[18px] text-[#534e4e] dark:text-[#cccccc] mb-4">
-                            {article.content}
+                          <div className="text-[18px] text-[#534e4e] dark:text-[#76a3ad] mb-4">
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                code({inline, className, children, ...props}: CodeProps) {
+                                  const match = /language-(\w+)/.exec(className || '');
+                                  const language = match ? match[1] : '';
+                                  return !inline ? (
+                                    <div className="inline-block min-w-fit rounded-lg bg-white dark:bg-[#242638] p-6">
+                                      <SyntaxHighlighter
+                                        language={language}
+                                        style={isDarkMode ? vscDarkPlus : vs}
+                                        customStyle={{
+                                          ...customStyle,
+                                          backgroundColor: isDarkMode ? '#242638' : 'white',
+                                        }}
+                                        className="!m-0 !p-0 !border-none [&>span]:!bg-transparent [&>*]:!text-[18px] rounded-lg"
+                                        wrapLongLines={true}
+                                        showLineNumbers={true}
+                                        lineNumberStyle={{
+                                          minWidth: '2.5em',
+                                          paddingRight: '1em',
+                                          textAlign: 'right',
+                                          userSelect: 'none',
+                                          opacity: 0.5,
+                                          fontSize: '18px',
+                                          color: isDarkMode ? '#76a3ad' : '#534e4e'
+                                        }}
+                                      >
+                                        {String(children).replace(/\n$/, '')}
+                                      </SyntaxHighlighter>
+                                    </div>
+                                  ) : (
+                                    <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5" {...props}>
+                                      {children}
+                                    </code>
+                                  );
+                                }
+                              }}
+                            >
+                              {article.content}
+                            </ReactMarkdown>
                           </div>
-                          {article.codeExamples.map((example: CodeExample, index: number) => (
-                            <div key={index} className="mb-4">
-                              <p className="text-[18px] text-[#534e4e] dark:text-[#cccccc] mb-2">
-                                {example.description}
-                              </p>
-                              <div className="inline-block min-w-fit rounded-lg !bg-black/5 dark:!bg-white/5 p-6">
-                                <SyntaxHighlighter
-                                  language={example.language}
-                                  style={isDarkMode ? vscDarkPlus : vs}
-                                  customStyle={customStyle}
-                                  className="!bg-transparent !m-0 !p-0 !border-none [&>span]:!bg-transparent [&>*]:!text-[18px]"
-                                  wrapLongLines={true}
-                                  showLineNumbers={true}
-                                  lineNumberStyle={{
-                                    minWidth: '2.5em',
-                                    paddingRight: '1em',
-                                    textAlign: 'right',
-                                    userSelect: 'none',
-                                    opacity: 0.5,
-                                    fontSize: '18px'
-                                  }}
-                                >
-                                  {example.code}
-                                </SyntaxHighlighter>
-                              </div>
-                            </div>
-                          ))}
                         </div>
                       ))}
                     </div>
@@ -353,7 +369,7 @@ export const Desktop = (): JSX.Element => {
           <div className="flex items-center">
             <span className="font-normal text-black dark:text-white text-2xl">©</span>
             <span className="font-normal text-black dark:text-white text-[18px] ml-1">
-              Nadir Zamanov 2024
+              Time Of Code {new Date().getFullYear()}
             </span>
           </div>
         </CardContent>

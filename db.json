@@ -1,0 +1,47 @@
+{
+  "languages": [
+    {
+      "_id": "60td4sv5j",
+      "name": "Python",
+      "description": "",
+      "icon": "",
+      "difficulty": 1,
+      "popularity": 1,
+      "category": []
+    }
+  ],
+  "categories": [
+    {
+      "_id": "iz4vexf8i",
+      "name": "OOP",
+      "description": "",
+      "languageId": "60td4sv5j",
+      "order": 0
+    }
+  ],
+  "topics": [
+    {
+      "_id": "ksgdis3r9",
+      "title": "Incapsulation",
+      "description": "",
+      "categoryId": "iz4vexf8i",
+      "order": 0
+    }
+  ],
+  "articles": [
+    {
+      "_id": "ms8ezqgpq",
+      "title": "Incapsulation",
+      "content": "```python\n\nstatic int PlusMethodInt(int x, int y)\n{\n  return x + y;\n}\n\nstatic double PlusMethodDouble(double x, double y)\n{\n  return x + y;\n}\n\nstatic void Main(string[] args)\n{\n  int myNum1 = PlusMethodInt(8, 5);\n  double myNum2 = PlusMethodDouble(4.3, 6.26);\n  Console.WriteLine(\"Int: \" + myNum1);\n  Console.WriteLine(\"Double: \" + myNum2);\n}\n```",
+      "topicId": "ksgdis3r9",
+      "order": 0
+    }
+  ],
+  "admins": [
+    {
+      "username": "Moguda",
+      "password": "123456",
+      "role": "super_admin"
+    }
+  ]
+}
