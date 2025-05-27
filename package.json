@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build:api": "cd api && npm install && npm run build",
+    "build:api": "tsc -p api",
     "build:next": "next build",
     "build": "npm run build:next && npm run build:api",
     "start": "next start",
