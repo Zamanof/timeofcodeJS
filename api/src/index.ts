@@ -20,7 +20,8 @@ const getLanguages: RequestHandler = (_req, res) => {
 const getCategories: RequestHandler = (req, res) => {
     const languageId = parseInt(req.query.languageId as string);
     if (isNaN(languageId)) {
-        return res.status(400).json({ error: 'Invalid languageId' });
+        res.status(400).json({ error: 'Invalid languageId' });
+        return;
     }
     const filteredCategories = categories.filter(cat => cat.languageId === languageId);
     res.json(filteredCategories);
@@ -30,7 +31,8 @@ const getCategories: RequestHandler = (req, res) => {
 const getTopics: RequestHandler = (req, res) => {
     const categoryId = parseInt(req.query.categoryId as string);
     if (isNaN(categoryId)) {
-        return res.status(400).json({ error: 'Invalid categoryId' });
+        res.status(400).json({ error: 'Invalid categoryId' });
+        return;
     }
     const filteredTopics = topics.filter(topic => topic.categoryId === categoryId);
     res.json(filteredTopics);
@@ -40,7 +42,8 @@ const getTopics: RequestHandler = (req, res) => {
 const getArticles: RequestHandler = (req, res) => {
     const topicId = parseInt(req.query.topicId as string);
     if (isNaN(topicId)) {
-        return res.status(400).json({ error: 'Invalid topicId' });
+        res.status(400).json({ error: 'Invalid topicId' });
+        return;
     }
     const filteredArticles = articles.filter(article => article.topicId === topicId);
     res.json(filteredArticles);
