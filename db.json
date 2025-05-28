@@ -8,6 +8,15 @@
       "difficulty": 1,
       "popularity": 1,
       "category": []
+    },
+    {
+      "_id": "u394u86le",
+      "name": "Rust",
+      "description": "",
+      "icon": "",
+      "difficulty": 1,
+      "popularity": 1,
+      "category": []
     }
   ],
   "categories": [
@@ -16,6 +25,20 @@
       "name": "OOP",
       "description": "",
       "languageId": "60td4sv5j",
+      "order": 0
+    },
+    {
+      "_id": "9f95nq8kf",
+      "name": "String formatting",
+      "description": "",
+      "languageId": "u394u86le",
+      "order": 0
+    },
+    {
+      "_id": "0gowkv8kh",
+      "name": "Aloo",
+      "description": "",
+      "languageId": "u394u86le",
       "order": 0
     }
   ],
@@ -26,6 +49,20 @@
       "description": "",
       "categoryId": "iz4vexf8i",
       "order": 0
+    },
+    {
+      "_id": "smqjrigqs",
+      "title": "Formatting",
+      "description": "",
+      "categoryId": "9f95nq8kf",
+      "order": 0
+    },
+    {
+      "_id": "hvldb56ej",
+      "title": "Salam",
+      "description": "",
+      "categoryId": "9f95nq8kf",
+      "order": 1
     }
   ],
   "articles": [
@@ -34,6 +71,13 @@
       "title": "Incapsulation",
       "content": "Инкапсуляция как связь\n\nПодобного рода трактовка термина «инкапсуляция» очень проста в объяснении. В данном случае, любой класс в котором есть хотя бы одна переменная и один метод который ею управляет наглядно демонстрирует этот принцип.\n\n\n#!/usr/bin/python3\n\n```python\n\nclass Phone:\n    number = \"111-11-11\"\n    def print_number(self):\n        print( \"Phone number is: \", self.number )\n\nmy_phone = Phone()\nmy_phone.print_number()\n\ninput( \"Press Enter to exit\" )\n```\n\nКласс “Phone” объединяет данные в переменной “number” с методом “print_number()”\n\n\nМожно создать класс, который состоит только из методов (и не содержит переменных), что может быть удобно в некоторых языках программирования. Также возможно создать класс содержащий только данные, без методов, чего, во многих случаях, следует избегать. Обе практики следует применять в случае необходимости и их отношение к «объединяющей» инкапсуляции спорно.\n\n\nИнкапсуляция как управление доступом\n\nОбъяснение концепции ограничения доступа к данным или методам требует гораздо большего количества деталей. Прежде всего, в этом контексте термин «доступ» следует понимать как способность видеть и / или изменять внутреннее содержимое класса. Существует несколько уровней доступа, предоставляемых большинством ООП языков. Обобщая можно сказать что данные объекта могут быть:\n\n\nпубличными (public) — данные доступны всем;\nприватными (private) — данные доступны только объекту/классу которому они принадлежат.\n\nБольшинство языков имеют дополнительные степени доступа, которые находятся между этими границами. К примеру, в C++ и Python3 есть три уровня доступа: публичный, защищенный и приватный; C# добавляет ключевое слово «внутренний» (internal) в список.\n\n\nСтоит отметить, что в большинстве языков программирования, уровень доступа к любым данным установлен по умолчанию. Например, в C++ по умолчанию уровень доступа к данным в классе задан как приватный— к его данным могут обращаться только члены и друзья класса. Стандартный уровень доступа к структуре (struct) в C++ отличается — он публичный, и данные в такой структуре могут быть доступны любому. Уровень доступа для переменных и методов класса в Python 3 полностью зависит от синтаксиса.\n\n\nПримеры\n\nИнкапсуляция\n\nPython 3 предоставляет 3 уровня доступа к данным:\n\n\nпубличный (public, нет особого синтаксиса, publicBanana);\nзащищенный (protected, одно нижнее подчеркивание в начале названия, _protectedBanana);\nприватный (private, два нижних подчеркивания в начала названия, __privateBanana).\n\nДля краткости и простоты, только два базовых уровня (приватный и публичный) освещены в примере.\n\n\n#!/usr/bin/python3\n\n```python\n\nclass Phone:\n    username = \"Kate\"                # public variable\n    __how_many_times_turned_on = 0   # private variable\n\n    def call(self):                  # public method\n        print( \"Ring-ring!\" )\n\n    def __turn_on(self):             # private method\n        self.__how_many_times_turned_on += 1 \n        print( \"Times was turned on: \", self.__how_many_times_turned_on )\n\nmy_phone = Phone()\n\nmy_phone.call()\nprint( \"The username is \", my_phone.username )\n# my_phone.turn_on()\n# my_phone.__turn_on()\n# print( “Turned on: “, my_phone.__how_many_times_turned_on)\n# print( “Turned on: “, my_phone.how_many_times_turned_on)\n# will produce an error\ninput( \"Press Enter to exit\" )\n\n```\nДоступ к публичным переменным и методам можно получить из основной программы. Попытка получить приватные данные или запустить приватный метод приведет к ошибке.\n\n\nНарушение инкапсуляции\n\nСам язык предоставляет программисту синтаксический инструмент, который может обойти инкапсуляцию. Читать и изменять частные переменные и вызывать частные функции все же возможно.\n\n\n#!/usr/bin/python3\n\n```python\n\nclass Phone:\n    username = \"Kate\"                # public variable\n    __serial_number = \"11.22.33\"     # private variable\n    __how_many_times_turned_on = 0   # private variable\n\n    def call(self):                  # public method\n        print( \"Ring-ring!\" )\n\n    def __turn_on(self):             # private method\n        self.__how_many_times_turned_on += 1 \n        print( \"Times was turned on: \", self.__how_many_times_turned_on )\n\nmy_phone = Phone()\n\nmy_phone._Phone__turn_on()\nmy_phone._Phone__serial_number = \"44.55.66\"\nprint( \"New serial number is \", my_phone._Phone__serial_number )\n\ninput( \"Press Enter to exit\" )\n```\n\nНесколько слов о Магии\n\nСуществуют методы, так называемые «магические методы» («magic methods») или «специальные методы» («special methods»), которые позволяют классам определять свое поведение в отношении стандартных языковых операторов. Примером таких языковых операторов могут служить следующие выражения:\n\n\nx > y\nx[ i ]\n\nPython 3 поддерживает множество таких методов, полный список можно найти на странице официальной документации языка. __init__ (инициализатор) является наиболее часто используемым из них и запускается при создании нового объекта класса. Другой, __lt__ (расширенное сравнение), определяет правила для сравнения двух объектов пользовательского класса. Такие методы не попадают в категорию «приватных» или «публичных», поскольку служат другим целям и корнями глубоко уходят во внутреннюю структуру языка.\n\n\n#!/usr/bin/python3\n\n```python\n\nclass Phone:\n    def __init__(self, number):      # magic method / inititalizer\n        print( \"The Phone object was created\" )\n        self.number = number\n\n    def __lt__(self, other):         # magic method / rich comparison\n        return self.number < other.number\n\nmy_phone = Phone(20)\nother_phone = Phone(30)\n\nif my_phone < other_phone:\n    print( \"Two instances of custom class were compared\" )\n    print( \"'__lt__' was called implicitly\" )\n\nif my_phone.__lt__(other_phone):\n    print( \"Now, '__lt__' was used explicitly\" )\n\ninput( \"Press Enter to exit\" )\n```\n\nМагические методы могут быть вызваны любым пользователем таким же образом как и любой публичный метод в Питоне, однако они предназначены для неявного использования в своих особых случаях. Специальный случай для метода __init__ — инициализация нового объекта класса. __lt__ служит для сравнения двух объектов.\n\n\nЗаключение\n\nPython3 не обеспечивает ограниченный доступ к каким-либо переменным или методам класса. Данные, которые должны быть скрыты, на самом деле могут быть прочитаны и изменены. В Python3 инкапсуляция является скорее условностью, и программист должен самостоятельно заботиться о ее сохранении.",
       "topicId": "s8vuvqx0j",
+      "order": 0
+    },
+    {
+      "_id": "9faygbnii",
+      "title": "String",
+      "content": "We've seen that formatting is specified via a format string:\n\n1. format!(\"{}\", foo) -> \"3735928559\"\n2. format!(\"0x{:X}\", foo) -> \"0xDEADBEEF\"\n3. format!(\"0o{:o}\", foo) -> \"0o33653337357\"\n\nThe same variable (foo) can be formatted differently depending on which argument type is used: X vs o vs unspecified.\n\nThis formatting functionality is implemented via traits, and there is one trait for each argument type. The most common formatting trait is Display, which handles cases where the argument type is left unspecified: {} for instance.\n\n```rust\n\nuse std::fmt::{self, Formatter, Display};\n\nstruct City {\n    name: &'static str,\n    // Latitude\n    lat: f32,\n    // Longitude\n    lon: f32,\n}\n\nimpl Display for City {\n    // `f` is a buffer, and this method must write the formatted string into it.\n    fn fmt(&self, f: &mut Formatter) -> fmt::Result {\n        let lat_c = if self.lat >= 0.0 { 'N' } else { 'S' };\n        let lon_c = if self.lon >= 0.0 { 'E' } else { 'W' };\n\n        // `write!` is like `format!`, but it will write the formatted string\n        // into a buffer (the first argument).\n        write!(f, \"{}: {:.3}°{} {:.3}°{}\",\n               self.name, self.lat.abs(), lat_c, self.lon.abs(), lon_c)\n    }\n}\n\n#[derive(Debug)]\nstruct Color {\n    red: u8,\n    green: u8,\n    blue: u8,\n}\n\nfn main() {\n    for city in [\n        City { name: \"Dublin\", lat: 53.347778, lon: -6.259722 },\n        City { name: \"Oslo\", lat: 59.95, lon: 10.75 },\n        City { name: \"Vancouver\", lat: 49.25, lon: -123.1 },\n    ] {\n        println!(\"{}\", city);\n    }\n    for color in [\n        Color { red: 128, green: 255, blue: 90 },\n        Color { red: 0, green: 3, blue: 254 },\n        Color { red: 0, green: 0, blue: 0 },\n    ] {\n        // Switch this to use {} once you've added an implementation\n        // for fmt::Display.\n        println!(\"{:?}\", color);\n    }\n}\n```",
+      "topicId": "smqjrigqs",
       "order": 0
     }
   ],

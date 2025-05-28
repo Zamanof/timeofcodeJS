@@ -1,28 +1,39 @@
 import { config } from 'dotenv';
 import { MongoClient } from 'mongodb';
 
-config(); // Load environment variables
+config();
 
-// MongoDB connection string for Azure Cosmos DB
-const MONGODB_URI = 'mongodb+srv://moguda:Z%40man0v0643@timeofcodedb.global.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000';
-const DATABASE_NAME = 'timeofcode';
+const MONGODB_URI = process.env.MONGODB_URI || '';
+const DATABASE_NAME = process.env.DATABASE_NAME || 'timeofcode';
+
+if (!MONGODB_URI) {
+    console.error('MONGODB_URI environment variable is not set');
+    process.exit(1);
+}
 
 let client: MongoClient | null = null;
 
 export async function connectToDatabase() {
     try {
         console.log('Attempting to connect to MongoDB...');
-        console.log('Using database:', DATABASE_NAME);
         
         if (!client) {
-            client = new MongoClient(MONGODB_URI);
-            console.log('Created MongoDB client instance');
+            client = new MongoClient(MONGODB_URI, {
+                // Add connection options for better reliability
+                connectTimeoutMS: 5000,
+                socketTimeoutMS: 30000,
+                serverSelectionTimeoutMS: 5000,
+                retryWrites: false
+            });
             
             await client.connect();
             console.log('Connected to MongoDB successfully');
             
             const db = client.db(DATABASE_NAME);
-            console.log('Accessed database:', DATABASE_NAME);
+            
+            // Test the connection by running a simple command
+            await db.command({ ping: 1 });
+            console.log('Database connection verified');
             
             return db;
         }
