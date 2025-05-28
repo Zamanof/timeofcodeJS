@@ -2,5 +2,9 @@
   "/page": "app/page.js",
   "/api/languages/route": "app/api/languages/route.js",
   "/api/languages/[id]/categories/route": "app/api/languages/[id]/categories/route.js",
-  "/api/categories/[id]/topics/route": "app/api/categories/[id]/topics/route.js"
+  "/login/page": "app/login/page.js",
+  "/api/categories/[id]/topics/route": "app/api/categories/[id]/topics/route.js",
+  "/api/auth/route": "app/api/auth/route.js",
+  "/admin/page": "app/admin/page.js",
+  "/api/topics/[id]/articles/route": "app/api/topics/[id]/articles/route.js"
 }

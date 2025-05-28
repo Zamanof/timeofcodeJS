@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const categoryId = searchParams.get('categoryId');
   
-  const topics = await getCollection('topics');
+  const topics = await getCollection('topics') as Topic[];
   
   if (categoryId) {
     return NextResponse.json(topics.filter(topic => topic.categoryId === categoryId));
