@@ -1,60 +1,85 @@
-import express, { Request, Response, RequestHandler } from 'express';
+import express from 'express';
 import cors from 'cors';
-import { languages } from './models/Language';
-import { categories } from './models/Category';
-import { topics } from './models/Topic';
-import { articles } from './models/Article';
+import dbService from './models/db';
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(express.json());
 
-// Languages endpoint
-const getLanguages: RequestHandler = (_req, res) => {
-    res.json(languages);
-};
+// Initialize database
+dbService.initialize().catch(err => {
+    console.error('Failed to initialize database:', err);
+    process.exit(1);
+});
 
-// Categories endpoint
-const getCategories: RequestHandler = (req, res) => {
-    const languageId = parseInt(req.query.languageId as string);
-    if (isNaN(languageId)) {
-        res.status(400).json({ error: 'Invalid languageId' });
-        return;
+// API Routes
+app.get('/api/languages', async (req, res) => {
+    try {
+        const languages = await dbService.getLanguages();
+        res.json(languages);
+    } catch (error) {
+        console.error('Error fetching languages:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-    const filteredCategories = categories.filter(cat => cat.languageId === languageId);
-    res.json(filteredCategories);
-};
+});
 
-// Topics endpoint
-const getTopics: RequestHandler = (req, res) => {
-    const categoryId = parseInt(req.query.categoryId as string);
-    if (isNaN(categoryId)) {
-        res.status(400).json({ error: 'Invalid categoryId' });
-        return;
+app.get('/api/languages/:languageId/categories', async (req, res) => {
+    try {
+        const categories = await dbService.getCategoriesByLanguage(req.params.languageId);
+        res.json(categories);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-    const filteredTopics = topics.filter(topic => topic.categoryId === categoryId);
-    res.json(filteredTopics);
-};
+});
 
-// Articles endpoint
-const getArticles: RequestHandler = (req, res) => {
-    const topicId = parseInt(req.query.topicId as string);
-    if (isNaN(topicId)) {
-        res.status(400).json({ error: 'Invalid topicId' });
-        return;
+app.get('/api/categories/:categoryId/topics', async (req, res) => {
+    try {
+        const topics = await dbService.getTopicsByCategory(req.params.categoryId);
+        res.json(topics);
+    } catch (error) {
+        console.error('Error fetching topics:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-    const filteredArticles = articles.filter(article => article.topicId === topicId);
-    res.json(filteredArticles);
-};
+});
 
-// Register routes
-app.get('/api/languages', getLanguages);
-app.get('/api/categories', getCategories);
-app.get('/api/topics', getTopics);
-app.get('/api/articles', getArticles);
+app.get('/api/topics/:topicId/articles', async (req, res) => {
+    try {
+        const articles = await dbService.getArticlesByTopic(req.params.topicId);
+        res.json(articles);
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
+app.get('/api/articles/:articleId', async (req, res) => {
+    try {
+        const article = await dbService.getArticleById(req.params.articleId);
+        if (!article) {
+            res.status(404).json({ error: 'Article not found' });
+            return;
+        }
+        res.json(article);
+    } catch (error) {
+        console.error('Error fetching article:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
+
+// Start the server
 app.listen(port, () => {
-    console.log(`API server running at http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
+    console.log('Available endpoints:');
+    console.log('- GET /api/languages');
+    console.log('- GET /api/languages/:languageId/categories');
+    console.log('- GET /api/categories/:categoryId/topics');
+    console.log('- GET /api/topics/:topicId/articles');
+    console.log('- GET /api/articles/:articleId');
 }); 

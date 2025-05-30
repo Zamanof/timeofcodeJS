@@ -1,9 +1,10 @@
 import { config } from 'dotenv';
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db } from 'mongodb';
 
+// Load environment variables
 config();
 
-const MONGODB_URI = process.env.MONGODB_URI || '';
+const MONGODB_URI = process.env.MONGODB_URI;
 const DATABASE_NAME = process.env.DATABASE_NAME || 'timeofcode';
 
 if (!MONGODB_URI) {
@@ -12,50 +13,47 @@ if (!MONGODB_URI) {
 }
 
 let client: MongoClient | null = null;
+let db: Db | null = null;
 
-export async function connectToDatabase() {
+export async function connectToDatabase(): Promise<Db> {
     try {
-        console.log('Attempting to connect to MongoDB...');
-        
-        if (!client) {
-            client = new MongoClient(MONGODB_URI, {
-                // Add connection options for better reliability
-                connectTimeoutMS: 5000,
-                socketTimeoutMS: 30000,
-                serverSelectionTimeoutMS: 5000,
-                retryWrites: false
-            });
-            
-            await client.connect();
-            console.log('Connected to MongoDB successfully');
-            
-            const db = client.db(DATABASE_NAME);
-            
-            // Test the connection by running a simple command
-            await db.command({ ping: 1 });
-            console.log('Database connection verified');
-            
+        if (db) {
+            console.log('Using existing database connection');
             return db;
         }
-        return client.db(DATABASE_NAME);
+
+        console.log('Connecting to MongoDB...');
+        client = new MongoClient(MONGODB_URI, {
+            // Add connection options for better reliability
+            connectTimeoutMS: 5000,
+            socketTimeoutMS: 30000,
+            serverSelectionTimeoutMS: 5000,
+            retryWrites: false
+        });
+
+        await client.connect();
+        console.log('Connected to MongoDB successfully');
+
+        db = client.db(DATABASE_NAME);
+        console.log(`Connected to database: ${DATABASE_NAME}`);
+
+        // Test the connection
+        await db.command({ ping: 1 });
+        console.log('Database connection verified');
+
+        return db;
     } catch (error) {
-        console.error('Failed to connect to MongoDB. Error details:');
-        if (error instanceof Error) {
-            console.error('Error name:', error.name);
-            console.error('Error message:', error.message);
-            if (error.stack) {
-                console.error('Stack trace:', error.stack);
-            }
-        }
+        console.error('Failed to connect to MongoDB:', error);
         throw error;
     }
 }
 
-export async function closeDatabaseConnection() {
+export async function closeDatabase(): Promise<void> {
     if (client) {
         try {
             await client.close();
             client = null;
+            db = null;
             console.log('Closed MongoDB connection');
         } catch (error) {
             console.error('Error closing MongoDB connection:', error);
@@ -66,11 +64,11 @@ export async function closeDatabaseConnection() {
 
 // Handle process termination
 process.on('SIGINT', async () => {
-    await closeDatabaseConnection();
+    await closeDatabase();
     process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
-    await closeDatabaseConnection();
+    await closeDatabase();
     process.exit(0);
 }); 

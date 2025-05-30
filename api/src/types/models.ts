@@ -2,9 +2,10 @@ import { ObjectId } from 'mongodb';
 
 export interface Language {
     _id?: ObjectId;
+    id: number;
     name: string;
     description: string;
-    icon: string;
+    icon: string | null;
     difficulty: 'beginner' | 'intermediate' | 'advanced';
     popularity: number;
     category: string;
@@ -12,40 +13,36 @@ export interface Language {
 
 export interface Category {
     _id?: ObjectId;
-    languageId: number;
+    id: number;
     name: string;
     description: string;
-    icon: string;
+    languageId: number;
     order: number;
 }
 
 export interface Topic {
     _id?: ObjectId;
-    categoryId: ObjectId;
-    name: string;
+    id: number;
+    title: string;
     description: string;
-    difficulty: 'beginner' | 'intermediate' | 'advanced';
-    estimatedTime: string;
-    prerequisites: string[];
+    categoryId: ObjectId;
     order: number;
 }
 
 export interface CodeExample {
+    id: number;
     code: string;
-    description: string;
     language: string;
+    description: string;
+    articleId: number;
+    order: number;
 }
 
 export interface Article {
     _id?: ObjectId;
-    topicId: ObjectId;
+    id: number;
     title: string;
     content: string;
-    author: string;
-    readingTime: string;
-    difficulty: 'beginner' | 'intermediate' | 'advanced';
-    tags: string[];
-    codeExamples: CodeExample[];
-    createdAt: Date;
-    updatedAt: Date;
+    topicId: ObjectId;
+    order: number;
 } 
