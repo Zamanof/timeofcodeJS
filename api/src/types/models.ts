@@ -2,7 +2,6 @@ import { ObjectId } from 'mongodb';
 
 export interface Language {
     _id?: ObjectId;
-    id: number;
     name: string;
     description: string;
     icon: string | null;
@@ -13,16 +12,14 @@ export interface Language {
 
 export interface Category {
     _id?: ObjectId;
-    id: number;
     name: string;
     description: string;
-    languageId: number;
+    languageId: ObjectId;
     order: number;
 }
 
 export interface Topic {
     _id?: ObjectId;
-    id: number;
     title: string;
     description: string;
     categoryId: ObjectId;
@@ -30,17 +27,16 @@ export interface Topic {
 }
 
 export interface CodeExample {
-    id: number;
+    _id?: ObjectId;
     code: string;
     language: string;
     description: string;
-    articleId: number;
+    articleId: ObjectId;
     order: number;
 }
 
 export interface Article {
     _id?: ObjectId;
-    id: number;
     title: string;
     content: string;
     topicId: ObjectId;

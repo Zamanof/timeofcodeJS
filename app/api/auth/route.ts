@@ -1,37 +1,54 @@
 import { NextResponse } from 'next/server';
-import { readDb } from '@/app/lib/db';
+import { compare } from 'bcrypt';
 import { cookies } from 'next/headers';
 
+const API_BASE_URL = 'http://localhost:4000/api';
+
 export async function POST(request: Request) {
-  const { username, password } = await request.json();
+    try {
+        const body = await request.json();
+        const { username, password } = body;
 
-  const db = await readDb();
-  const admin = db.admins.find(
-    (a) => a.username === username && a.password === password
-  );
+        // Fetch admin from MongoDB
+        const response = await fetch(`${API_BASE_URL}/admins/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
 
-  if (!admin) {
-    return new NextResponse(
-      JSON.stringify({ error: 'Invalid credentials' }),
-      { status: 401 }
-    );
-  }
+        if (!response.ok) {
+            return NextResponse.json(
+                { error: 'Invalid credentials' },
+                { status: 401 }
+            );
+        }
 
-  // In a real application, you should use a proper session management system
-  // and never store plain text passwords
-  const cookieStore = cookies();
-  cookieStore.set('admin_session', JSON.stringify({
-    username: admin.username,
-    role: admin.role
-  }), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    path: '/'
-  });
+        const data = await response.json();
+        
+        // Set session cookie
+        cookies().set('admin_session', JSON.stringify({
+            username: data.username,
+            role: data.role
+        }), {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 7 * 24 * 60 * 60 // 7 days
+        });
 
-  return NextResponse.json({ 
-    username: admin.username,
-    role: admin.role
-  });
+        return NextResponse.json({
+            user: {
+                username: data.username,
+                role: data.role
+            }
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        return NextResponse.json(
+            { error: 'Internal server error' },
+            { status: 500 }
+        );
+    }
 } 

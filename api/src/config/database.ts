@@ -4,8 +4,9 @@ import { MongoClient, Db } from 'mongodb';
 // Load environment variables
 config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
-const DATABASE_NAME = process.env.DATABASE_NAME || 'timeofcode';
+// Temporary hardcoded connection string for testing
+const MONGODB_URI = 'mongodb+srv://moguda:0643a0643_@timeofcodedb.global.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000';
+const DATABASE_NAME = 'timeofcode';
 
 if (!MONGODB_URI) {
     console.error('MONGODB_URI environment variable is not set');

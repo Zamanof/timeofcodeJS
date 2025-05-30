@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { CodeProps } from 'react-markdown/lib/ast-to-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const customStyle: React.CSSProperties = {
   background: 'transparent',
@@ -178,30 +179,65 @@ export const Desktop = (): JSX.Element => {
                 />
               </div>
 
-              {/* Programming Languages Menu */}
-              <Tabs 
-                value={selectedLanguage?.name.toLowerCase() || languages[0]?.name.toLowerCase()} 
-                className="w-full"
-                onValueChange={(value) => {
-                  const lang = languages.find(l => l.name.toLowerCase() === value);
-                  if (lang) {
-                    console.log('Selected language:', lang);
-                    setSelectedLanguage(lang);
-                  }
-                }}
-              >
-                <TabsList className="bg-transparent shadow-none">
-                  {languages.map((lang, index) => (
-                    <TabsTrigger
-                      key={lang._id}
-                      value={lang.name.toLowerCase()}
-                      className="bg-transparent shadow-none data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-black dark:data-[state=active]:text-white text-[#534e4e] dark:text-[#76a3ad] hover:bg-transparent hover:shadow-none relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 data-[state=active]:after:scale-x-100 after:bg-black dark:after:bg-white after:transition-transform text-[21px]"
-                    >
-                      {lang.name}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
+              {/* Programming Languages Menu - Desktop */}
+              <div className="hidden sm:block">
+                <Tabs
+                  value={selectedLanguage?.name.toLowerCase() || languages[0]?.name.toLowerCase()} 
+                  className="w-full"
+                  onValueChange={(value) => {
+                    const lang = languages.find(l => l.name.toLowerCase() === value);
+                    if (lang) {
+                      setSelectedTopic(null);
+                      console.log('Selected language:', lang);
+                      setSelectedLanguage(lang);
+                    }
+                  }}
+                >
+                  <TabsList className="bg-transparent shadow-none">
+                    {languages.map((lang) => (
+                      <TabsTrigger
+                        key={lang._id}
+                        value={lang.name.toLowerCase()}
+                        className="bg-transparent shadow-none data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-black dark:data-[state=active]:text-white text-[#534e4e] dark:text-[#76a3ad] hover:bg-transparent hover:shadow-none relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 data-[state=active]:after:scale-x-100 after:bg-black dark:after:bg-white after:transition-transform text-[21px]"
+                      >
+                        {lang.name}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              {/* Programming Languages Menu - Mobile */}
+              <div className="block sm:hidden w-full">
+                <Select
+                  value={selectedLanguage?.name.toLowerCase() || languages[0]?.name.toLowerCase()}
+                  onValueChange={(value) => {
+                    const lang = languages.find(l => l.name.toLowerCase() === value);
+                    if (lang) {
+                      setSelectedTopic(null);
+                      console.log('Selected language:', lang);
+                      setSelectedLanguage(lang);
+                    }
+                  }}
+                >
+                  <SelectTrigger className="w-full min-h-[45px] text-base border-[0.5px] border-black dark:border-white rounded-[10px] bg-transparent">
+                    <SelectValue placeholder="Select Language">
+                      {selectedLanguage?.name || languages[0]?.name}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    {languages.map((lang) => (
+                      <SelectItem 
+                        key={lang._id} 
+                        value={lang.name.toLowerCase()}
+                        className="min-h-[40px] text-base py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        {lang.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Search and Theme Toggle */}
@@ -211,7 +247,7 @@ export const Desktop = (): JSX.Element => {
                 <Input
                   type="text"
                   placeholder="Search..."
-                  className="w-[300px] pl-9 border-[0.5px] border-black dark:border-white rounded-[10px] bg-transparent text-[18px] font-normal text-[#534e4e] dark:text-[#76a3ad] placeholder:text-[#534e4e] dark:placeholder:text-[#76a3ad]"
+                  className="w-full sm:w-[200px] md:w-[250px] lg:w-[300px] pl-9 border-[0.5px] border-black dark:border-white rounded-[10px] bg-transparent text-[18px] font-normal text-[#534e4e] dark:text-[#76a3ad] placeholder:text-[#534e4e] dark:placeholder:text-[#76a3ad]"
                 />
               </div>
               <Switch
@@ -232,9 +268,53 @@ export const Desktop = (): JSX.Element => {
       </Card>
 
       {/* Main Section */}
-      <div className="flex flex-1 flex-col md:flex-row gap-2">
-        {/* Left Sidebar */}
-        <Card className="w-full md:w-[267px] shrink-0 border-[0.5px] border-black dark:border-white rounded-[10px]">
+      <div className="flex flex-col md:flex-row gap-2 flex-1">
+        {/* Left Sidebar - Mobile Dropdown */}
+        <div className="block md:hidden mb-2">
+          <Select
+            value={selectedTopic?._id || ''}
+            onValueChange={(value) => {
+              const topic = topics.find(t => t._id === value);
+              if (topic) {
+                setSelectedTopic(topic);
+              }
+            }}
+          >
+            <SelectTrigger className="w-full min-h-[45px] text-base border-[0.5px] border-black dark:border-white rounded-[10px] bg-transparent">
+              <SelectValue placeholder="Select Topic">
+                {selectedTopic?.title || 'Select a topic'}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent className="w-full max-h-[50vh] overflow-y-auto">
+              {categories.map((category) => {
+                const categoryTopics = topics.filter(topic => topic.categoryId === category._id);
+                return (
+                  <React.Fragment key={category._id}>
+                    <SelectItem 
+                      value={category._id || ''}
+                      className="font-semibold min-h-[40px] text-base py-2 cursor-default bg-gray-50 dark:bg-gray-800"
+                      disabled
+                    >
+                      {category.name}
+                    </SelectItem>
+                    {categoryTopics.map(topic => (
+                      <SelectItem 
+                        key={topic._id}
+                        value={topic._id || ''}
+                        className="pl-6 min-h-[40px] text-base py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        {topic.title}
+                      </SelectItem>
+                    ))}
+                  </React.Fragment>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Left Sidebar - Desktop */}
+        <Card className="hidden md:block w-full md:w-[267px] shrink-0 border-[0.5px] border-black dark:border-white rounded-[10px]">
           <CardContent className="p-4">
             <Accordion type="multiple" className="space-y-1">
               {categories.map((category) => {
@@ -297,7 +377,16 @@ export const Desktop = (): JSX.Element => {
                   ) : error ? (
                     <div className="text-red-500 py-4">Error: {error}</div>
                   ) : articles.length === 0 ? (
-                    <div className="text-gray-500 py-4">No articles available for this topic</div>
+                    <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                      <img 
+                        src="/construction.svg" 
+                        alt="Under Construction" 
+                        className="w-32 h-32 opacity-50 construction-icon"
+                      />
+                      <div className="text-2xl font-semibold text-gray-500 dark:text-gray-400 construction-text">
+                        Konstruksiya olunur
+                      </div>
+                    </div>
                   ) : (
                     <div className="space-y-8">
                       {articles.map((article) => (
@@ -352,6 +441,31 @@ export const Desktop = (): JSX.Element => {
                       ))}
                     </div>
                   )}
+                </div>
+              ) : selectedLanguage && categories.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                  <img 
+                    src="/construction.svg" 
+                    alt="Under Construction" 
+                    className="w-32 h-32 opacity-50 construction-icon"
+                  />
+                  <div className="text-2xl font-semibold text-gray-500 dark:text-gray-400 construction-text">
+                    Konstruksiya olunur
+                  </div>
+                  <div className="text-lg text-gray-400 dark:text-gray-500 coming-soon-text">
+                    {selectedLanguage.name} content coming soon
+                  </div>
+                </div>
+              ) : topics.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                  <img 
+                    src="/construction.svg" 
+                    alt="Under Construction" 
+                    className="w-32 h-32 opacity-50 construction-icon"
+                  />
+                  <div className="text-2xl font-semibold text-gray-500 dark:text-gray-400 construction-text">
+                    Konstruksiya olunur
+                  </div>
                 </div>
               ) : (
                 <div className="text-center text-gray-500 py-4">

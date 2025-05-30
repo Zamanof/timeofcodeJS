@@ -58,21 +58,21 @@ async function initializeDatabase() {
         // Sample categories for each language
         const jsCategories = [
             {
-                languageId: 1, // JavaScript
+                languageId: languagesResult.insertedIds[0], // JavaScript
                 name: 'Fundamentals',
                 description: 'Core JavaScript concepts and syntax',
                 icon: 'basics-icon',
                 order: 1
             },
             {
-                languageId: 1,
+                languageId: languagesResult.insertedIds[0],
                 name: 'DOM Manipulation',
                 description: 'Working with the Document Object Model',
                 icon: 'dom-icon',
                 order: 2
             },
             {
-                languageId: 1,
+                languageId: languagesResult.insertedIds[0],
                 name: 'Async Programming',
                 description: 'Promises, async/await, and callbacks',
                 icon: 'async-icon',
@@ -82,14 +82,14 @@ async function initializeDatabase() {
 
         const pythonCategories = [
             {
-                languageId: 2, // Python
+                languageId: languagesResult.insertedIds[1], // Python
                 name: 'Basics',
                 description: 'Fundamental Python concepts',
                 icon: 'python-basics-icon',
                 order: 1
             },
             {
-                languageId: 2,
+                languageId: languagesResult.insertedIds[1],
                 name: 'Data Structures',
                 description: 'Built-in Python data structures',
                 icon: 'data-structures-icon',
@@ -99,14 +99,14 @@ async function initializeDatabase() {
 
         const tsCategories = [
             {
-                languageId: 3, // TypeScript
+                languageId: languagesResult.insertedIds[2], // TypeScript
                 name: 'Type System',
                 description: 'TypeScript type system basics',
                 icon: 'types-icon',
                 order: 1
             },
             {
-                languageId: 3,
+                languageId: languagesResult.insertedIds[2],
                 name: 'Advanced Types',
                 description: 'Advanced TypeScript type features',
                 icon: 'advanced-types-icon',
@@ -127,7 +127,7 @@ async function initializeDatabase() {
             // JavaScript Fundamentals Topics
             {
                 categoryId: categoriesResult.insertedIds[0],
-                name: 'Variables and Data Types',
+                title: 'Variables and Data Types',
                 description: 'Understanding JavaScript variables and data types',
                 difficulty: 'beginner',
                 estimatedTime: '30 minutes',
@@ -136,7 +136,7 @@ async function initializeDatabase() {
             },
             {
                 categoryId: categoriesResult.insertedIds[0],
-                name: 'Functions and Scope',
+                title: 'Functions and Scope',
                 description: 'Working with functions and understanding scope',
                 difficulty: 'beginner',
                 estimatedTime: '45 minutes',
@@ -145,7 +145,7 @@ async function initializeDatabase() {
             },
             {
                 categoryId: categoriesResult.insertedIds[0],
-                name: 'Control Flow',
+                title: 'Control Flow',
                 description: 'Conditionals, loops, and control structures',
                 difficulty: 'beginner',
                 estimatedTime: '40 minutes',
@@ -155,7 +155,7 @@ async function initializeDatabase() {
             // JavaScript DOM Topics
             {
                 categoryId: categoriesResult.insertedIds[1],
-                name: 'DOM Selection',
+                title: 'DOM Selection',
                 description: 'Selecting and accessing DOM elements',
                 difficulty: 'beginner',
                 estimatedTime: '35 minutes',
@@ -164,7 +164,7 @@ async function initializeDatabase() {
             },
             {
                 categoryId: categoriesResult.insertedIds[1],
-                name: 'Event Handling',
+                title: 'Event Handling',
                 description: 'Working with DOM events and event listeners',
                 difficulty: 'beginner',
                 estimatedTime: '40 minutes',
@@ -174,7 +174,7 @@ async function initializeDatabase() {
             // JavaScript Async Topics
             {
                 categoryId: categoriesResult.insertedIds[2],
-                name: 'Promises',
+                title: 'Promises',
                 description: 'Understanding and working with Promises',
                 difficulty: 'intermediate',
                 estimatedTime: '50 minutes',
@@ -183,7 +183,7 @@ async function initializeDatabase() {
             },
             {
                 categoryId: categoriesResult.insertedIds[2],
-                name: 'Async/Await',
+                title: 'Async/Await',
                 description: 'Modern asynchronous programming with async/await',
                 difficulty: 'intermediate',
                 estimatedTime: '45 minutes',
@@ -193,7 +193,7 @@ async function initializeDatabase() {
             // Python Basics Topics
             {
                 categoryId: categoriesResult.insertedIds[3],
-                name: 'Python Variables',
+                title: 'Python Variables',
                 description: 'Understanding Python variables and data types',
                 difficulty: 'beginner',
                 estimatedTime: '30 minutes',
@@ -230,7 +230,7 @@ async function initializeDatabase() {
             }
         ];
 
-        // Insert all topics
+        // Insert topics
         const topicsResult = await db.collection('topics').insertMany(allTopics);
         console.log('Inserted topics:', topicsResult.insertedIds);
 
@@ -240,13 +240,65 @@ async function initializeDatabase() {
             {
                 topicId: topicsResult.insertedIds[0],
                 title: 'Introduction to JavaScript Variables',
-                content: `JavaScript variables are containers for storing data values. There are three ways to declare variables in JavaScript:
-                
-                1. var (function-scoped or globally-scoped)
-                2. let (block-scoped)
-                3. const (block-scoped, constant value)
-                
-                Let's explore each of these in detail...`,
+                content: `# Introduction to JavaScript Variables
+
+JavaScript variables are containers for storing data values. In this article, we'll learn about:
+
+- Variable declaration
+- Data types
+- Variable scope
+- Best practices
+
+## Variable Declaration
+
+There are three ways to declare variables in JavaScript:
+
+\`\`\`javascript
+var x = 5;       // The old way (avoid using var)
+let y = 6;       // The modern way for variables that can change
+const z = 7;     // For variables that won't change
+\`\`\`
+
+## Data Types
+
+JavaScript has several basic data types:
+
+\`\`\`javascript
+let string = "Hello";           // String
+let number = 42;                // Number
+let boolean = true;             // Boolean
+let array = [1, 2, 3];         // Array
+let object = {name: "John"};    // Object
+let nullValue = null;          // Null
+let undefinedValue;            // Undefined
+\`\`\`
+
+## Variable Scope
+
+Variables have different scope depending on how they are declared:
+
+\`\`\`javascript
+// Global scope
+let globalVar = "I'm global";
+
+function example() {
+    // Function scope
+    let functionVar = "I'm function-scoped";
+    
+    if (true) {
+        // Block scope
+        let blockVar = "I'm block-scoped";
+    }
+}
+\`\`\`
+
+## Best Practices
+
+1. Use meaningful variable names
+2. Use camelCase for variable names
+3. Prefer \`const\` when the value won't change
+4. Use \`let\` instead of \`var\`
+5. Declare variables at the top of their scope`,
                 author: 'John Doe',
                 readingTime: '10 minutes',
                 difficulty: 'beginner',
@@ -382,7 +434,7 @@ async function initializeDatabase() {
         console.log('Database initialization completed successfully');
         process.exit(0);
     } catch (error) {
-        console.error('Error initializing database:', error);
+        console.error('Failed to initialize database:', error);
         process.exit(1);
     }
 }

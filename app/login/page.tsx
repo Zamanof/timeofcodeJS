@@ -26,13 +26,16 @@ export default function LoginPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
+        credentials: 'include'
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to login');
       }
 
+      // If login successful, redirect to admin page
       router.push('/admin');
       router.refresh();
     } catch (err) {

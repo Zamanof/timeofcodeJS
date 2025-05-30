@@ -21,3 +21,4 @@ exports.languages = [
         icon: 'typescript.svg'
     }
 ];
+//# sourceMappingURL=Language.js.map

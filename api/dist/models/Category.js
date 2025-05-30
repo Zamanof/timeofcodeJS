@@ -48,3 +48,4 @@ exports.categories = [
         order: 2
     }
 ];
+//# sourceMappingURL=Category.js.map

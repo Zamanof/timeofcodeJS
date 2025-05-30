@@ -1,4 +1,11 @@
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'http://localhost:4000/api';
+
+const defaultFetchOptions = {
+    credentials: 'include' as const,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+};
 
 const handleResponse = async (response: Response) => {
     if (!response.ok) {
@@ -50,35 +57,32 @@ export interface Article {
 
 const languages = {
     getAll: async (): Promise<Language[]> => {
-        const response = await fetch(`${API_BASE_URL}/languages`);
-        if (!response.ok) throw new Error('Failed to fetch languages');
-        return response.json();
+        const response = await fetch(`${API_BASE_URL}/languages`, defaultFetchOptions);
+        return handleResponse(response);
     },
     getById: async (id: string): Promise<Language> => {
-        const response = await fetch(`${API_BASE_URL}/languages/${id}`);
-        if (!response.ok) throw new Error('Failed to fetch language');
-        return response.json();
+        const response = await fetch(`${API_BASE_URL}/languages/${id}`, defaultFetchOptions);
+        return handleResponse(response);
     },
     create: async (language: Omit<Language, '_id'>): Promise<Language> => {
         const response = await fetch(`${API_BASE_URL}/languages`, {
+            ...defaultFetchOptions,
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(language),
         });
-        if (!response.ok) throw new Error('Failed to create language');
-        return response.json();
+        return handleResponse(response);
     },
     update: async (id: string, language: Partial<Language>): Promise<Language> => {
         const response = await fetch(`${API_BASE_URL}/languages/${id}`, {
+            ...defaultFetchOptions,
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(language),
         });
-        if (!response.ok) throw new Error('Failed to update language');
-        return response.json();
+        return handleResponse(response);
     },
     delete: async (id: string): Promise<void> => {
         const response = await fetch(`${API_BASE_URL}/languages/${id}`, {
+            ...defaultFetchOptions,
             method: 'DELETE',
         });
         if (!response.ok) throw new Error('Failed to delete language');
@@ -88,30 +92,28 @@ const languages = {
 
 const categories = {
     getByLanguage: async (languageId: string): Promise<Category[]> => {
-        const response = await fetch(`${API_BASE_URL}/languages/${languageId}/categories`);
-        if (!response.ok) throw new Error('Failed to fetch categories');
-        return response.json();
+        const response = await fetch(`${API_BASE_URL}/languages/${languageId}/categories`, defaultFetchOptions);
+        return handleResponse(response);
     },
     create: async (category: Omit<Category, '_id'>): Promise<Category> => {
         const response = await fetch(`${API_BASE_URL}/categories`, {
+            ...defaultFetchOptions,
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(category),
         });
-        if (!response.ok) throw new Error('Failed to create category');
-        return response.json();
+        return handleResponse(response);
     },
     update: async (id: string, category: Partial<Category>): Promise<Category> => {
         const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+            ...defaultFetchOptions,
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(category),
         });
-        if (!response.ok) throw new Error('Failed to update category');
-        return response.json();
+        return handleResponse(response);
     },
     delete: async (id: string): Promise<void> => {
         const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+            ...defaultFetchOptions,
             method: 'DELETE',
         });
         if (!response.ok) throw new Error('Failed to delete category');
@@ -121,30 +123,28 @@ const categories = {
 
 const topics = {
     getByCategory: async (categoryId: string): Promise<Topic[]> => {
-        const response = await fetch(`${API_BASE_URL}/categories/${categoryId}/topics`);
-        if (!response.ok) throw new Error('Failed to fetch topics');
-        return response.json();
+        const response = await fetch(`${API_BASE_URL}/categories/${categoryId}/topics`, defaultFetchOptions);
+        return handleResponse(response);
     },
     create: async (topic: Omit<Topic, '_id'>): Promise<Topic> => {
         const response = await fetch(`${API_BASE_URL}/topics`, {
+            ...defaultFetchOptions,
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(topic),
         });
-        if (!response.ok) throw new Error('Failed to create topic');
-        return response.json();
+        return handleResponse(response);
     },
     update: async (id: string, topic: Partial<Topic>): Promise<Topic> => {
         const response = await fetch(`${API_BASE_URL}/topics/${id}`, {
+            ...defaultFetchOptions,
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(topic),
         });
-        if (!response.ok) throw new Error('Failed to update topic');
-        return response.json();
+        return handleResponse(response);
     },
     delete: async (id: string): Promise<void> => {
         const response = await fetch(`${API_BASE_URL}/topics/${id}`, {
+            ...defaultFetchOptions,
             method: 'DELETE',
         });
         if (!response.ok) throw new Error('Failed to delete topic');
@@ -154,30 +154,28 @@ const topics = {
 
 const articles = {
     getByTopic: async (topicId: string): Promise<Article[]> => {
-        const response = await fetch(`${API_BASE_URL}/topics/${topicId}/articles`);
-        if (!response.ok) throw new Error('Failed to fetch articles');
-        return response.json();
+        const response = await fetch(`${API_BASE_URL}/topics/${topicId}/articles`, defaultFetchOptions);
+        return handleResponse(response);
     },
     create: async (article: Omit<Article, '_id'>): Promise<Article> => {
         const response = await fetch(`${API_BASE_URL}/articles`, {
+            ...defaultFetchOptions,
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(article),
         });
-        if (!response.ok) throw new Error('Failed to create article');
-        return response.json();
+        return handleResponse(response);
     },
     update: async (id: string, article: Partial<Article>): Promise<Article> => {
         const response = await fetch(`${API_BASE_URL}/articles/${id}`, {
+            ...defaultFetchOptions,
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(article),
         });
-        if (!response.ok) throw new Error('Failed to update article');
-        return response.json();
+        return handleResponse(response);
     },
     delete: async (id: string): Promise<void> => {
         const response = await fetch(`${API_BASE_URL}/articles/${id}`, {
+            ...defaultFetchOptions,
             method: 'DELETE',
         });
         if (!response.ok) throw new Error('Failed to delete article');

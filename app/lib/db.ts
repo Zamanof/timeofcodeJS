@@ -1,5 +1,3 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { Language, Category, Topic, Article } from '../services/api';
 
 export interface Admin {
@@ -8,64 +6,47 @@ export interface Admin {
   role: 'admin' | 'super_admin';
 }
 
-interface DbSchema {
-  languages: Language[];
-  categories: Category[];
-  topics: Topic[];
-  articles: Article[];
-  admins: Admin[];
-}
+const API_BASE_URL = 'http://localhost:4000/api';
 
-const DB_PATH = path.join(process.cwd(), 'db.json');
+const defaultFetchOptions = {
+    credentials: 'include' as const,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+};
 
-export const initializeDb = async () => {
-  const defaultDb: DbSchema = {
-    languages: [],
-    categories: [],
-    topics: [],
-    articles: [],
-    admins: [
-      {
-        username: 'Moguda',
-        // In a real application, never store plain text passwords. Use bcrypt or similar.
-        password: '123456',
-        role: 'super_admin'
-      }
-    ]
-  };
-
-  try {
-    await fs.access(DB_PATH);
-  } catch {
-    await fs.writeFile(DB_PATH, JSON.stringify(defaultDb, null, 2));
+export async function getCollection(collection: 'languages' | 'categories' | 'topics' | 'articles') {
+  const response = await fetch(`${API_BASE_URL}/${collection}`, defaultFetchOptions);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${collection}`);
   }
-};
-
-export const readDb = async (): Promise<DbSchema> => {
-  await initializeDb();
-  const data = await fs.readFile(DB_PATH, 'utf-8');
-  return JSON.parse(data);
-};
-
-export const writeDb = async (db: DbSchema): Promise<void> => {
-  await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
-};
-
-export async function getCollection(collection: keyof DbSchema) {
-  const db = await readDb();
-  return db[collection];
+  return response.json();
 }
 
-export async function addToCollection(collection: keyof DbSchema, item: any) {
-  const db = await readDb();
-  db[collection].push(item);
-  await writeDb(db);
-  return item;
+export async function addToCollection(collection: 'languages' | 'categories' | 'topics' | 'articles', item: any) {
+  const response = await fetch(`${API_BASE_URL}/${collection}`, {
+    ...defaultFetchOptions,
+    method: 'POST',
+    body: JSON.stringify(item),
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to add item to ${collection}`);
+  }
+  
+  return response.json();
 }
 
-export async function updateCollection(collection: keyof DbSchema, items: any[]) {
-  const db = await readDb();
-  db[collection] = items;
-  await writeDb(db);
-  return items;
+export async function updateCollection(collection: 'languages' | 'categories' | 'topics' | 'articles', items: any[]) {
+  const response = await fetch(`${API_BASE_URL}/${collection}`, {
+    ...defaultFetchOptions,
+    method: 'PUT',
+    body: JSON.stringify(items),
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to update ${collection}`);
+  }
+  
+  return response.json();
 } 
