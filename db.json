@@ -79,6 +79,13 @@
       "content": "We've seen that formatting is specified via a format string:\n\n1. format!(\"{}\", foo) -> \"3735928559\"\n2. format!(\"0x{:X}\", foo) -> \"0xDEADBEEF\"\n3. format!(\"0o{:o}\", foo) -> \"0o33653337357\"\n\nThe same variable (foo) can be formatted differently depending on which argument type is used: X vs o vs unspecified.\n\nThis formatting functionality is implemented via traits, and there is one trait for each argument type. The most common formatting trait is Display, which handles cases where the argument type is left unspecified: {} for instance.\n\n```rust\n\nuse std::fmt::{self, Formatter, Display};\n\nstruct City {\n    name: &'static str,\n    // Latitude\n    lat: f32,\n    // Longitude\n    lon: f32,\n}\n\nimpl Display for City {\n    // `f` is a buffer, and this method must write the formatted string into it.\n    fn fmt(&self, f: &mut Formatter) -> fmt::Result {\n        let lat_c = if self.lat >= 0.0 { 'N' } else { 'S' };\n        let lon_c = if self.lon >= 0.0 { 'E' } else { 'W' };\n\n        // `write!` is like `format!`, but it will write the formatted string\n        // into a buffer (the first argument).\n        write!(f, \"{}: {:.3}°{} {:.3}°{}\",\n               self.name, self.lat.abs(), lat_c, self.lon.abs(), lon_c)\n    }\n}\n\n#[derive(Debug)]\nstruct Color {\n    red: u8,\n    green: u8,\n    blue: u8,\n}\n\nfn main() {\n    for city in [\n        City { name: \"Dublin\", lat: 53.347778, lon: -6.259722 },\n        City { name: \"Oslo\", lat: 59.95, lon: 10.75 },\n        City { name: \"Vancouver\", lat: 49.25, lon: -123.1 },\n    ] {\n        println!(\"{}\", city);\n    }\n    for color in [\n        Color { red: 128, green: 255, blue: 90 },\n        Color { red: 0, green: 3, blue: 254 },\n        Color { red: 0, green: 0, blue: 0 },\n    ] {\n        // Switch this to use {} once you've added an implementation\n        // for fmt::Display.\n        println!(\"{:?}\", color);\n    }\n}\n```",
       "topicId": "smqjrigqs",
       "order": 0
+    },
+    {
+      "_id": "gvet0yvcl",
+      "title": "Ыфйщд",
+      "content": "",
+      "topicId": "hvldb56ej",
+      "order": 0
     }
   ],
   "admins": [

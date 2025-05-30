@@ -1,11 +1,11 @@
 {
   "/page": "app/page.js",
-  "/api/categories/[id]/topics/route": "app/api/categories/[id]/topics/route.js",
-  "/admin/page": "app/admin/page.js",
-  "/login/page": "app/login/page.js",
-  "/api/topics/route": "app/api/topics/route.js",
   "/api/languages/route": "app/api/languages/route.js",
   "/api/languages/[id]/categories/route": "app/api/languages/[id]/categories/route.js",
+  "/login/page": "app/login/page.js",
+  "/api/categories/[id]/topics/route": "app/api/categories/[id]/topics/route.js",
+  "/api/auth/route": "app/api/auth/route.js",
   "/api/topics/[id]/articles/route": "app/api/topics/[id]/articles/route.js",
-  "/api/categories/route": "app/api/categories/route.js"
+  "/admin/page": "app/admin/page.js",
+  "/api/articles/route": "app/api/articles/route.js"
 }
