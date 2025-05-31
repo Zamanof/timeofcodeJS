@@ -4,7 +4,7 @@ import apiRouter from './routes/api';
 import { dbService } from './models/db';
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 5000;
 
 // CORS configuration
 const corsOptions = {
