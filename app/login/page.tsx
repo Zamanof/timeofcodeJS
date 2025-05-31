@@ -20,7 +20,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth', {
+      const response = await fetch('/api/admins/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
