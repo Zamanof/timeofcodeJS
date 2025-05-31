@@ -2,6 +2,13 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Martian_Mono } from 'next/font/google';
+
+const martianMono = Martian_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+});
 
 const CountdownUnit = ({ value, label }: { value: number; label: string }) => (
   <motion.div
@@ -10,13 +17,13 @@ const CountdownUnit = ({ value, label }: { value: number; label: string }) => (
     className="flex flex-col items-center mx-4"
   >
     <motion.div 
-      className="text-5xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent"
+      className={`${martianMono.className} text-5xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent`}
       animate={{ scale: [1, 1.1, 1] }}
       transition={{ duration: 1, repeat: Infinity, repeatDelay: 1 }}
     >
       {value.toString().padStart(2, '0')}
     </motion.div>
-    <div className="text-sm uppercase tracking-wider text-gray-600 dark:text-gray-400">{label}</div>
+    <div className={`${martianMono.className} text-sm uppercase tracking-wider text-gray-600 dark:text-gray-400 font-medium`}>{label}</div>
   </motion.div>
 );
 
@@ -33,7 +40,7 @@ const AnimatedLogo = () => {
 
   return (
     <motion.div 
-      className="flex items-center justify-center space-x-2 font-martian text-6xl md:text-7xl font-bold"
+      className={`${martianMono.className} flex items-center justify-center space-x-2 text-6xl md:text-7xl font-bold`}
       initial="initial"
       animate="animate"
     >
@@ -125,7 +132,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-[#f7f7fa] dark:bg-[#131516] flex flex-col items-center justify-center p-4">
-      <div className="relative w-full max-w-2xl mx-auto flex flex-col items-center font-martian">
+      <div className="relative w-full max-w-2xl mx-auto flex flex-col items-center">
         {/* Animated Logo */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -143,7 +150,7 @@ export default function Page() {
           transition={{ delay: 0.6, duration: 0.5 }}
           className="w-full overflow-x-auto scrollbar-none"
         >
-          <div className="text-2xl md:text-3xl font-bold text-black dark:text-white mb-7 text-center tracking-wider whitespace-nowrap min-w-max mx-auto">
+          <div className={`${martianMono.className} text-2xl md:text-3xl font-bold text-black dark:text-white mb-7 text-center tracking-wider whitespace-nowrap min-w-max mx-auto`}>
             Your time. Your code. Your future.
           </div>
         </motion.div>
@@ -156,11 +163,11 @@ export default function Page() {
           className="flex justify-center items-center mb-8"
         >
           <CountdownUnit value={countdown.days} label="Days" />
-          <div className="text-4xl font-bold text-gray-400">:</div>
+          <div className={`${martianMono.className} text-4xl font-bold text-gray-400`}>:</div>
           <CountdownUnit value={countdown.hours} label="Hours" />
-          <div className="text-4xl font-bold text-gray-400">:</div>
+          <div className={`${martianMono.className} text-4xl font-bold text-gray-400`}>:</div>
           <CountdownUnit value={countdown.minutes} label="Minutes" />
-          <div className="text-4xl font-bold text-gray-400">:</div>
+          <div className={`${martianMono.className} text-4xl font-bold text-gray-400`}>:</div>
           <CountdownUnit value={countdown.seconds} label="Seconds" />
         </motion.div>
 
@@ -169,7 +176,7 @@ export default function Page() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="text-xl text-gray-600 dark:text-gray-400 text-center max-w-lg mb-8"
+          className={`${martianMono.className} text-xl text-gray-600 dark:text-gray-400 text-center max-w-lg mb-8 font-normal`}
         >
           Sizə möhtəşəm məzmun təqdim etmək üçün çox çalışırıq. Bizi izləməyə davam edin!
         </motion.div>
