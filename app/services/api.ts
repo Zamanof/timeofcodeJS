@@ -183,7 +183,19 @@ const articles = {
     }
 };
 
+const auth = {
+    login: async (username: string, password: string) => {
+        const response = await fetch(`${API_BASE_URL}/admins/login`, {
+            ...defaultFetchOptions,
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+        });
+        return handleResponse(response);
+    }
+};
+
 export const api = {
+    auth,
     languages,
     categories,
     topics,

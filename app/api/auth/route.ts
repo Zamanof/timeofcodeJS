@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { compare } from 'bcrypt';
 import { cookies } from 'next/headers';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
@@ -9,21 +8,18 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { username, password } = body;
 
-        // Fetch admin from MongoDB
+        // Call the backend API directly
         const response = await fetch(`${API_BASE_URL}/api/admins/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, password }),
-            credentials: 'include'
+            body: JSON.stringify({ username, password })
         });
 
         if (!response.ok) {
-            return NextResponse.json(
-                { error: 'Invalid credentials' },
-                { status: 401 }
-            );
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to login');
         }
 
         const data = await response.json();
@@ -48,8 +44,8 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error('Login error:', error);
         return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
+            { error: error instanceof Error ? error.message : 'Internal server error' },
+            { status: error instanceof Error && error.message === 'Invalid credentials' ? 401 : 500 }
         );
     }
 } 

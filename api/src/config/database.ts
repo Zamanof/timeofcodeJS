@@ -4,9 +4,8 @@ import { MongoClient, Db } from 'mongodb';
 // Load environment variables
 config();
 
-// Temporary hardcoded connection string for testing
-const MONGODB_URI = 'mongodb+srv://moguda:0643a0643_@timeofcodedb.global.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000';
-const DATABASE_NAME = 'timeofcode';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://moguda:0643a0643_@timeofcodedb.global.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000';
+const DATABASE_NAME = process.env.DATABASE_NAME || 'timeofcode';
 
 if (!MONGODB_URI) {
     console.error('MONGODB_URI environment variable is not set');
@@ -26,10 +25,11 @@ export async function connectToDatabase(): Promise<Db> {
         console.log('Connecting to MongoDB...');
         client = new MongoClient(MONGODB_URI, {
             // Add connection options for better reliability
-            connectTimeoutMS: 5000,
-            socketTimeoutMS: 30000,
-            serverSelectionTimeoutMS: 5000,
-            retryWrites: false
+            connectTimeoutMS: 10000,
+            socketTimeoutMS: 45000,
+            serverSelectionTimeoutMS: 10000,
+            retryWrites: false,
+            ssl: true
         });
 
         await client.connect();
