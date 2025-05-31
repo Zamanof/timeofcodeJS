@@ -7,7 +7,10 @@ module.exports = {
       cwd: '/var/www/timeofcodeJS',
       env: {
         NODE_ENV: 'production',
-        PORT: 3000
+        PORT: 3000,
+       
+        NEXT_PUBLIC_API_BASE_URL: 'https://timeofcode.dev/api', 
+        API_BASE_URL: 'https://timeofcode.dev/api'             
       }
     },
     {
@@ -16,8 +19,8 @@ module.exports = {
       cwd: '/var/www/timeofcodeJS/api',
       env: {
         NODE_ENV: 'production',
-        PORT: 5000
+        PORT: 5000,
       }
     }
   ]
-}; 
+};
