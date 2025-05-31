@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+// Use environment-specific API URL
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+    ? 'https://api.timeofcode.dev'  // Production API URL
+    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000');
 
 export async function POST(request: Request) {
     try {
@@ -19,7 +22,8 @@ export async function POST(request: Request) {
         const response = await fetch(`${API_BASE_URL}/api/admins/login`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Origin': process.env.NODE_ENV === 'production' ? 'https://timeofcode.dev' : 'http://localhost:3000'
             },
             body: JSON.stringify({ username, password })
         });
@@ -31,7 +35,7 @@ export async function POST(request: Request) {
 
         const data = await response.json();
         
-        // Set session cookie
+        // Set session cookie with appropriate domain
         cookies().set('admin_session', JSON.stringify({
             username: data.username,
             role: data.role
@@ -39,6 +43,7 @@ export async function POST(request: Request) {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
+            domain: process.env.NODE_ENV === 'production' ? '.timeofcode.dev' : undefined,
             maxAge: 7 * 24 * 60 * 60 // 7 days
         });
 
@@ -59,5 +64,14 @@ export async function POST(request: Request) {
 
 // Add OPTIONS handler for CORS preflight
 export async function OPTIONS() {
-    return NextResponse.json({}, { status: 200 });
+    return new NextResponse(null, {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' 
+                ? 'https://timeofcode.dev' 
+                : 'http://localhost:3000'
+        }
+    });
 } 

@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     unoptimized: true,
-    domains: ['localhost'],
+    domains: ['localhost', 'timeofcode.dev'],
   },
   webpack: (config, { isServer }) => {
     config.cache = false;
@@ -15,6 +15,14 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/api/:path*',
+      },
+    ];
   }
 }
 
