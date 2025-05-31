@@ -8,6 +8,13 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { username, password } = body;
 
+        if (!username || !password) {
+            return NextResponse.json(
+                { error: 'Username and password are required' },
+                { status: 400 }
+            );
+        }
+
         // Call the backend API directly
         const response = await fetch(`${API_BASE_URL}/api/admins/login`, {
             method: 'POST',
@@ -48,4 +55,9 @@ export async function POST(request: Request) {
             { status: error instanceof Error && error.message === 'Invalid credentials' ? 401 : 500 }
         );
     }
+}
+
+// Add OPTIONS handler for CORS preflight
+export async function OPTIONS() {
+    return NextResponse.json({}, { status: 200 });
 } 
