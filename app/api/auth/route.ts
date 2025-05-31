@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { compare } from 'bcrypt';
 import { cookies } from 'next/headers';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export async function POST(request: Request) {
     try {
@@ -10,12 +10,13 @@ export async function POST(request: Request) {
         const { username, password } = body;
 
         // Fetch admin from MongoDB
-        const response = await fetch(`${API_BASE_URL}/admins/login`, {
+        const response = await fetch(`${API_BASE_URL}/api/admins/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username, password }),
+            credentials: 'include'
         });
 
         if (!response.ok) {

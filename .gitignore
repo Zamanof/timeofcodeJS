@@ -17,11 +17,13 @@ node_modules
 # misc
 .DS_Store
 *.pem
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+
+# Environment variables
+.env.local             # Игнорировать локальные переменные окружения
+.env.development.local # Игнорировать локальные переменные для разработки
+.env.test.local        # Игнорировать локальные переменные для тестов
+.env.production        # Игнорировать продакшн переменные окружения (важно!)
+# .env                 # Эту строку лучше закомментировать или удалить, если вы используете специфичные .env файлы
 
 # debug
 npm-debug.log*
